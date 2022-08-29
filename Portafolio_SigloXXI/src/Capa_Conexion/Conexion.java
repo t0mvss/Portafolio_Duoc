@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package CapaConexion;
+package Capa_Conexion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ public class Conexion {
     private final String SERVER = "localhost:3306";
     private final String BBDD = "restaurant";
 
-     private Conexion(){
+    public Conexion(){
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
