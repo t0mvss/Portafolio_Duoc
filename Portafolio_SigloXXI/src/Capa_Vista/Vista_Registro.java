@@ -158,9 +158,7 @@ public class Vista_Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtApellidoActionPerformed
 
     private void btnRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistroMouseClicked
-        Vista_Menu menu = new Vista_Menu();
-        menu.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_btnRegistroMouseClicked
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
@@ -187,14 +185,17 @@ public class Vista_Registro extends javax.swing.JFrame {
         else{
             try {
                 Capa_Controlador.ControladorRegistro rn = new ControladorRegistro();
-                nombre = txtNombre.getText();
-                apellido = txtApellido.getText();
-                correo = txtCorreo.getText();
-                contrasena = txtContrasena.getText();
+                String nombreA = txtNombre.getText();
+                String apellidoA = txtApellido.getText();
+                String correoA = txtCorreo.getText();
+                String contrasenaA = txtContrasena.getText();
                 
-               Usuario u = new Usuario(nombre,apellido,correo,contrasena);
-               rn.RegistrarUsuario(u);
-               
+               Usuario a = new Usuario(0,nombreA,apellidoA,correoA,contrasenaA);
+               rn.RegistrarUsuario(a);
+               JOptionPane.showMessageDialog(this,"¡Registro Exitoso!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+               Vista_Menu menu = new Vista_Menu();
+                menu.setVisible(true);
+                this.dispose();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
                     "Mensajes", JOptionPane.ERROR_MESSAGE);

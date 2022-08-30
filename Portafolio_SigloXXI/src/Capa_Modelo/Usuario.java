@@ -10,7 +10,7 @@ package Capa_Modelo;
  * @author tomas
  */
 public class Usuario {
-    
+    int id_usuario;
     String nombre;
     String apellido;
     String correo;
@@ -19,16 +19,21 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String apellido, String correo, String pass) {
+    public Usuario(int id_usuario, String nombre, String apellido, String correo, String pass) {
+        this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.pass = pass;
     }
 
-    
+    public int getId_usuario() {
+        return id_usuario;
+    }
 
-    
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
 
     public String getNombre() {
         return nombre;
@@ -61,6 +66,7 @@ public class Usuario {
     public void setPass(String pass) {
         this.pass = pass;
     }
+
     
     
     

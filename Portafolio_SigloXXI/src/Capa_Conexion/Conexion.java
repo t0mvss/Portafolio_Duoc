@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class Conexion {
     public static Conexion instance; 
-    private Connection conexion;
+    public Connection conexion;
 
     private final String USER = "root";
     private final String PASSWORD = "";

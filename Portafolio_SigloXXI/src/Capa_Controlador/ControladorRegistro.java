@@ -23,14 +23,16 @@ public class ControladorRegistro {
     PreparedStatement ps;
     ResultSet rs;
     public boolean RegistrarUsuario(Usuario u) {
-        String sql = "Insert into usuario values(?,?,?,?)";
+        String sql = "Insert into usuario values(?,?,?,?,?)";
         try {
             con = cn.getConexion();
             ps = con.prepareStatement(sql);
-            ps.setString(1, u.getNombre());
-            ps.setString(2, u.getApellido());
-            ps.setString(3, u.getCorreo());
-            ps.setString(4, u.getPass());
+            ps.setInt(1, 0);
+            ps.setString(2, u.getNombre());
+            ps.setString(3, u.getApellido());
+            ps.setString(4, u.getCorreo());
+            ps.setString(5, u.getPass());
+            ps.execute();
             
         } catch (Exception e) {
         }
