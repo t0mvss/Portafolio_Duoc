@@ -8,6 +8,7 @@ package Capa_Vista;
 import javax.swing.JOptionPane;
 import Capa_Controlador.ControladorRegistro;
 import Capa_Modelo.Usuario;
+import Capa_Modelo.Encoder;
 
 /**
  *
@@ -184,16 +185,23 @@ public class Vista_Registro extends javax.swing.JFrame {
         }
         else{
             try {
+                
                 Capa_Controlador.ControladorRegistro rn = new ControladorRegistro();
                 String nombreA = txtNombre.getText();
                 String apellidoA = txtApellido.getText();
                 String correoA = txtCorreo.getText();
                 String contrasenaA = txtContrasena.getText();
+                //String secretkey = "SomosProgramadores";
                 
-               Usuario a = new Usuario(0,nombreA,apellidoA,correoA,contrasenaA);
-               rn.RegistrarUsuario(a);
-               JOptionPane.showMessageDialog(this,"¡Registro Exitoso!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-               Vista_Menu menu = new Vista_Menu();
+                Capa_Modelo.Encoder CR = new Encoder();
+                
+                String encript = CR.ecnode(contrasenaA);
+                System.out.println(encript);
+                
+                Usuario a = new Usuario(0,nombreA,apellidoA,correoA,encript);
+                rn.RegistrarUsuario(a);
+                JOptionPane.showMessageDialog(this,"¡Registro Exitoso!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                Vista_Menu menu = new Vista_Menu();
                 menu.setVisible(true);
                 this.dispose();
             } catch (Exception e) {
@@ -206,37 +214,7 @@ public class Vista_Registro extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Vista_Registro().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistro;

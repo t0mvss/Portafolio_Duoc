@@ -5,17 +5,32 @@
  */
 package Capa_Vista;
 
+import Capa_Controlador.DevolverPassEncripted;
+import Capa_Conexion.Conexion;
+import Capa_Modelo.TextPrompt;
+import Capa_Modelo.Encoder;
+import Capa_Modelo.Usuario;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tomas
  */
 public class Vista_Login extends javax.swing.JFrame {
 
+    //private DevolverPassEncripted m;
+    //private Encoder e;
+    private Conexion c;
+    //private Usuario u;
+
     /**
      * Creates new form Vista_Login
      */
     public Vista_Login() {
         initComponents();
+        this.setTitle("Login");
+        this.setLocation(500, 200);
+
     }
 
     /**
@@ -31,8 +46,10 @@ public class Vista_Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtUser = new javax.swing.JTextField();
-        txtPass = new javax.swing.JTextField();
         btnIngresar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        btnRegis = new javax.swing.JButton();
+        txtpass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,28 +65,47 @@ public class Vista_Login extends javax.swing.JFrame {
                 btnIngresarMouseClicked(evt);
             }
         });
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("¿Aún no te registras?");
+
+        btnRegis.setText("Registrarme");
+        btnRegis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnIngresar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(138, 138, 138)
-                            .addComponent(jLabel1))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(16, 16, 16)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                                .addComponent(txtUser)))))
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(118, 118, 118)
+                                .addComponent(btnIngresar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(txtpass)))
+                            .addComponent(btnRegis))))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,32 +119,114 @@ public class Vista_Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
-                .addComponent(btnIngresar)
-                .addGap(57, 57, 57))
+                    .addComponent(txtpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnIngresar)
+                        .addGap(57, 57, 57))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRegis)
+                        .addGap(35, 35, 35))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
-        Vista_Menu VM = new Vista_Menu();
-        VM.setVisible(true);
-        this.dispose();
+
+
     }//GEN-LAST:event_btnIngresarMouseClicked
+
+    private void btnRegisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisActionPerformed
+        Vista_Registro vs = new Vista_Registro();
+        vs.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegisActionPerformed
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+
+        String Pasword;
+        Usuario mUsuario = new Usuario();
+        if (txtUser.getText().trim().equals("") || txtpass.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Ingrese el usuario y contraseña");
+
+        } else {
+            //u = m.GetUsuario(txtUser.getText().trim());
+            try {
+                DevolverPassEncripted dev = new DevolverPassEncripted();
+                //Capa_Modelo.Encoder e = new Encoder();
+                Capa_Modelo.Encoder CR = new Encoder();
+                Pasword = CR.ecnode(txtpass.getText());
+                
+                String t = txtUser.getText();
+                mUsuario = dev.GetUsuario(t);
+                
+                String encript = CR.ecnode(txtpass.getText());
+                System.out.println(t);
+                System.out.println(mUsuario.getPass());
+                System.out.println(encript);
+                if (Pasword.equals(mUsuario.getPass())) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+                } else {
+                    JOptionPane.showMessageDialog(null, "La contraseña es incorrecta");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Contraseña nula", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,e.getMessage(),"Aviso",JOptionPane.WARNING_MESSAGE);
+                System.out.println(e.getMessage());
+                //String r = e.getMessage();
+            }
+
+        }
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Vista_Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Vista_Login().setVisible(true);
+            }
+        });
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JButton btnRegis;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtPass;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtUser;
+    private javax.swing.JPasswordField txtpass;
     // End of variables declaration//GEN-END:variables
 }

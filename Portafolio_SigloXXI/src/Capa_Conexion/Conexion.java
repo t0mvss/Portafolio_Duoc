@@ -27,12 +27,13 @@ public class Conexion {
         {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://" + SERVER + "/" + BBDD;
-            conexion = DriverManager.getConnection(url,USER,PASSWORD);
+            conexion = DriverManager.getConnection(url,USER,PASSWORD); 
         }
         catch(ClassNotFoundException | SQLException ex)
         {
             JOptionPane.showMessageDialog(null, "Problemas para conectarse a la base de datos.", 
                     "Mensajes", JOptionPane.ERROR_MESSAGE);
+            
         }
     }
 
