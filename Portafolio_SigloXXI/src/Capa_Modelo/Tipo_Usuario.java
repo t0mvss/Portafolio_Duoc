@@ -16,6 +16,8 @@ public class Tipo_Usuario {
     String descripción;
 
     public Tipo_Usuario() {
+        id_tipo_usuario =0;
+        descripción = "";
     }
 
     public Tipo_Usuario(int id_tipo_usuario, String descripción) {
@@ -38,6 +40,13 @@ public class Tipo_Usuario {
     public void setDescripción(String descripción) {
         this.descripción = descripción;
     }
+
+    @Override
+    public String toString() {
+        return getDescripción(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
     
 }

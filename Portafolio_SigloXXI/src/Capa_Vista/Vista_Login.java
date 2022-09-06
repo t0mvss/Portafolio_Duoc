@@ -139,9 +139,6 @@ public class Vista_Login extends javax.swing.JFrame {
                 mUsuario = dev.GetUsuario(t);
                 
                 String encript = CR.ecnode(txtpass.getText());
-                System.out.println(t);
-                System.out.println(mUsuario.getPass());
-                System.out.println(encript);
                 if (Pasword.equals(mUsuario.getPass())) {
                     JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
                     Vista_Menu visMen = new Vista_Menu();
@@ -152,8 +149,6 @@ public class Vista_Login extends javax.swing.JFrame {
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Contraseña nula", "Error", JOptionPane.ERROR_MESSAGE);
-                JOptionPane.showMessageDialog(this,e.getMessage(),"Aviso",JOptionPane.WARNING_MESSAGE);
-                System.out.println(e.getMessage());
                 //String r = e.getMessage();
             }
 

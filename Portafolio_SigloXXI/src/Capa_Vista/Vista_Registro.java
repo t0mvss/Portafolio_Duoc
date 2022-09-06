@@ -9,13 +9,18 @@ import javax.swing.JOptionPane;
 import Capa_Controlador.ControladorRegistro;
 import Capa_Modelo.Usuario;
 import Capa_Modelo.Encoder;
-
+import java.util.ArrayList;
+import Capa_Controlador.ControladorLLenadoComboBox;
+import Capa_Modelo.Tipo_Usuario;
+import java.util.Iterator;
 /**
  *
  * @author tomas
  */
 public class Vista_Registro extends javax.swing.JFrame {
-
+    
+    ControladorLLenadoComboBox controlador;
+    ArrayList ListaTipoUsuario;
     /**
      * Creates new form Vista_Registro
      */
@@ -23,6 +28,21 @@ public class Vista_Registro extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Registro");
         this.setLocation(500, 200);
+    }
+    
+    public void LlenarCMBTipoUsuario(){
+        try {
+            cmbTipoUsuario.removeAllItems();
+            ListaTipoUsuario = controlador.getListaTipoUsuarios();
+            Iterator iter = ListaTipoUsuario.iterator();
+            while (iter.hasNext()){
+                Tipo_Usuario tipoUsuario = (Tipo_Usuario) iter.next();
+                cmbTipoUsuario.addItem(tipoUsuario.toString());
+        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,"Hubo un error","Aviso",JOptionPane.WARNING_MESSAGE);
+        }
+        
     }
 
     /**
@@ -44,7 +64,7 @@ public class Vista_Registro extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         btnRegistro = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbTipoUsuario = new javax.swing.JComboBox<>();
         txtPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,7 +111,7 @@ public class Vista_Registro extends javax.swing.JFrame {
 
         jLabel6.setText("Autoridad");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Finanzas", "Bodega", "Cocina", " " }));
+        cmbTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bodega", "Cocina", "Finanzas", " " }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,7 +134,7 @@ public class Vista_Registro extends javax.swing.JFrame {
                                     .addComponent(jLabel6))
                                 .addGap(64, 64, 64)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, 150, Short.MAX_VALUE)
+                                    .addComponent(cmbTipoUsuario, 0, 150, Short.MAX_VALUE)
                                     .addComponent(txtPass)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -153,7 +173,7 @@ public class Vista_Registro extends javax.swing.JFrame {
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(50, 50, 50)
                 .addComponent(btnRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -193,20 +213,20 @@ public class Vista_Registro extends javax.swing.JFrame {
         }
         else{
             try {
-                
+                System.out.println(cmbTipoUsuario.getSelectedIndex()+1);
                 Capa_Controlador.ControladorRegistro rn = new ControladorRegistro();
                 String nombreA = txtNombre.getText();
                 String apellidoA = txtApellido.getText();
                 String correoA = txtCorreo.getText();
                 String contrasenaA = txtPass.getText();
+                int tipoUser = cmbTipoUsuario.getSelectedIndex()+1;
                 //String secretkey = "SomosProgramadores";
                 
                 Capa_Modelo.Encoder CR = new Encoder();
                 
                 String encript = CR.ecnode(contrasenaA);
-                System.out.println(encript);
                 
-                Usuario a = new Usuario(0,nombreA,apellidoA,correoA,encript);
+                Usuario a = new Usuario(0,nombreA,apellidoA,correoA,encript,tipoUser);
                 rn.RegistrarUsuario(a);
                 JOptionPane.showMessageDialog(this,"¡Registro Exitoso!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0);
@@ -225,7 +245,7 @@ public class Vista_Registro extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistro;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbTipoUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

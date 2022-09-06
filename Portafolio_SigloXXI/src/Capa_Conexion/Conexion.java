@@ -18,15 +18,16 @@ public class Conexion {
     public Connection conexion;
 
     private final String USER = "root";
-    private final String PASSWORD = "";
+    private final String PASSWORD = "Zomboyna.3";
     private final String SERVER = "localhost:3306";
-    private final String BBDD = "restaurant";
+    private final String BBDD = "restaurant?";
+    private final String SSL = "autoReconnect=true&useSSL=false";
 
     public Conexion(){
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://" + SERVER + "/" + BBDD;
+            String url = "jdbc:mysql://" + SERVER + "/" + BBDD + "/" + SSL;
             conexion = DriverManager.getConnection(url,USER,PASSWORD); 
         }
         catch(ClassNotFoundException | SQLException ex)
