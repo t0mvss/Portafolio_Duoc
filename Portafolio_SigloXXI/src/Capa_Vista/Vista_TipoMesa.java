@@ -189,6 +189,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
                     "Mensajes", JOptionPane.ERROR_MESSAGE);
             }
         }
+        mostrarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
