@@ -5,10 +5,12 @@
 package Capa_Vista;
 
 import Capa_Conexion.Conexion;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +27,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
 
     public Vista_TipoMesa() {
         initComponents();
+        mostrarTabla();
     }
 
     /**
@@ -61,11 +64,15 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTipoMesa = new javax.swing.JTable();
-        btnActualizarTabla = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnAtras = new javax.swing.JButton();
+        btnEliminarTipoMesa = new javax.swing.JButton();
+        txtTipoMesa = new javax.swing.JTextField();
+        btnModificarTipoMesa = new javax.swing.JButton();
+        lblDescripcion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tipos de Mesas");
 
         tblTipoMesa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -88,13 +95,6 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblTipoMesa);
 
-        btnActualizarTabla.setText("Actualizar Tabla");
-        btnActualizarTabla.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarTablaActionPerformed(evt);
-            }
-        });
-
         btnAgregar.setText("Agregar Tipo Mesa");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,6 +109,22 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
             }
         });
 
+        btnEliminarTipoMesa.setText("Eliminar Tipo Mesa");
+        btnEliminarTipoMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarTipoMesaActionPerformed(evt);
+            }
+        });
+
+        btnModificarTipoMesa.setText("Modificar Tipo Mesa");
+        btnModificarTipoMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarTipoMesaActionPerformed(evt);
+            }
+        });
+
+        lblDescripcion.setText("Descripción");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,38 +133,62 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnActualizarTabla)
+                        .addComponent(btnEliminarTipoMesa)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAgregar)
+                        .addComponent(btnModificarTipoMesa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAtras))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAgregar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblDescripcion)
+                        .addGap(228, 228, 228)))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(47, 47, 47)
+                .addComponent(lblDescripcion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEliminarTipoMesa)
                     .addComponent(btnAtras)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnActualizarTabla))
-                .addContainerGap(200, Short.MAX_VALUE))
+                    .addComponent(btnModificarTipoMesa))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarTablaActionPerformed
-        mostrarTabla();
-    }//GEN-LAST:event_btnActualizarTablaActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        Vista_Agregar_TipoMesa visTipoMesa = new Vista_Agregar_TipoMesa();
-        visTipoMesa.setVisible(true);
-        this.dispose();
+        String descripcion;
+        descripcion = txtTipoMesa.getText();
+        
+        if ((descripcion.equals("")) ){
+            JOptionPane.showMessageDialog(this, "Debe completar el campo","Precaución", JOptionPane.WARNING_MESSAGE);
+            txtTipoMesa.requestFocus();
+        }
+        else{
+            try {
+                CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?)}");
+                insert.setString(1, descripcion);
+                insert.execute();
+                JOptionPane.showMessageDialog(this,"¡Tipo de mesa agregada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -156,6 +196,45 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         visMenu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnEliminarTipoMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTipoMesaActionPerformed
+        int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea eliminar este Tipo de Mesa?","Mensajes", JOptionPane.ERROR_MESSAGE);
+        if (i == 0){
+            int fila = tblTipoMesa.getSelectedRow();
+            String valor = tblTipoMesa.getValueAt(fila, 0).toString();
+            try {
+                CallableStatement delete = cc.prepareCall("{call eliminarTipoMesa(?)}");
+                delete.setString(1, valor);
+                delete.execute();
+                JOptionPane.showMessageDialog(this,"¡Tipo de mesa eliminada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        mostrarTabla();
+    }//GEN-LAST:event_btnEliminarTipoMesaActionPerformed
+
+    private void btnModificarTipoMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTipoMesaActionPerformed
+        String descripcion;
+        int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea modificar este Tipo de Mesa?","Mensajes", JOptionPane.ERROR_MESSAGE);
+        if (i == 0){
+            int fila = tblTipoMesa.getSelectedRow();
+            String valor = tblTipoMesa.getValueAt(fila, 0).toString();
+            descripcion = tblTipoMesa.getValueAt(fila, 1).toString();
+            try {
+                CallableStatement modificar = cc.prepareCall("{call actualizarTipoMesa(?,?)}");
+                modificar.setString(1, valor);
+                modificar.setString(2, descripcion);
+                modificar.execute();
+                JOptionPane.showMessageDialog(this,"¡Tipo de mesa modificada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        mostrarTabla();
+    }//GEN-LAST:event_btnModificarTipoMesaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,10 +272,13 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizarTabla;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnEliminarTipoMesa;
+    private javax.swing.JButton btnModificarTipoMesa;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDescripcion;
     private javax.swing.JTable tblTipoMesa;
+    private javax.swing.JTextField txtTipoMesa;
     // End of variables declaration//GEN-END:variables
 }

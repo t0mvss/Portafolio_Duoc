@@ -77,8 +77,4 @@ public class Usuario {
         this.id_tipo_usuario = id_tipo_usuario;
     }
 
-    
-    
-    
-    
 }
