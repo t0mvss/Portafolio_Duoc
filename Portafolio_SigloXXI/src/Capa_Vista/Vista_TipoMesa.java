@@ -7,9 +7,11 @@ package Capa_Vista;
 import Capa_Conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -170,25 +172,59 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+
+
+    public int existeTipoMesa(String descripcion){
+    
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String sql = "SELECT COUNT(id_tipo_mesa) FROM tipo_mesa WHERE UPPER(descripcion) = UPPER(?)";
+    try{
+        ps = cc.prepareStatement(sql);
+        ps.setString(1, descripcion);
+        rs = ps.executeQuery();
+        if(rs.next()){
+            return rs.getInt(1);
+        }
+        return 1;
+    }
+    catch (SQLException ex){
+        return 1;
+    }
+    }
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String descripcion;
+        int existe;
         descripcion = txtTipoMesa.getText();
+        existe = existeTipoMesa(descripcion);
+
         
         if ((descripcion.equals("")) ){
             JOptionPane.showMessageDialog(this, "Debe completar el campo","Precaución", JOptionPane.WARNING_MESSAGE);
             txtTipoMesa.requestFocus();
         }
         else{
-            try {
-                CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?)}");
-                insert.setString(1, descripcion);
-                insert.execute();
-                JOptionPane.showMessageDialog(this,"¡Tipo de mesa agregada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
-                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea agregar este Tipo de Mesa?","Mensajes", JOptionPane.ERROR_MESSAGE);
+            if (i == 0){
+                if (existe == 0){
+                    try {
+                        CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?)}");
+                        insert.setString(1, descripcion);
+                        insert.execute();
+                        JOptionPane.showMessageDialog(this,"¡Tipo de mesa agregada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                            "Mensajes", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "El tipo de mesa ya existe","Mensajes", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
+        txtTipoMesa.setText("");
         mostrarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
