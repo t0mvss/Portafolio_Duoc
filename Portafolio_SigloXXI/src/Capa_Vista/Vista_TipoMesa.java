@@ -41,19 +41,17 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("DESCRIPCIÓN");
-        modelo.addColumn("CAPACIDAD");
         tblTipoMesa.setModel(modelo);
 
         String sql = "";
         sql = "select * from tipo_mesa";
-        String [] dato = new String[3];
+        String [] dato = new String[2];
         try{
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
                 dato[0] = rs.getString(1);
                 dato[1] = rs.getString(2);
-                dato[2] = rs.getString(3);
                 modelo.addRow(dato);
             }
             tblTipoMesa.setModel(modelo);
@@ -74,8 +72,6 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         txtTipoMesa = new javax.swing.JTextField();
         btnModificarTipoMesa = new javax.swing.JButton();
         lblDescripcion = new javax.swing.JLabel();
-        txtCapacidad = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tipos de Mesas");
@@ -131,57 +127,39 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
 
         lblDescripcion.setText("Descripción");
 
-        txtCapacidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCapacidadKeyTyped(evt);
-            }
-        });
-
-        jLabel1.setText("Capacidad");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnEliminarTipoMesa)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnModificarTipoMesa)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAtras))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(294, 294, 294)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAgregar))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(349, 349, 349)
-                        .addComponent(lblDescripcion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnEliminarTipoMesa)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificarTipoMesa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAtras))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAgregar)))
                 .addContainerGap(44, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblDescripcion)
+                .addGap(252, 252, 252))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(47, 47, 47)
+                .addComponent(lblDescripcion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDescripcion)
+                    .addComponent(btnAgregar)
                     .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnAgregar)
-                        .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -189,58 +167,54 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
                     .addComponent(btnEliminarTipoMesa)
                     .addComponent(btnAtras)
                     .addComponent(btnModificarTipoMesa))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
+
+
     public int existeTipoMesa(String descripcion){
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String sql = "SELECT COUNT(id_tipo_mesa) FROM tipo_mesa WHERE UPPER(descripcion) = UPPER(?)";
-        try{
-            ps = cc.prepareStatement(sql);
-            ps.setString(1, descripcion);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                return rs.getInt(1);
-            }
-            return 1;
+    
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String sql = "SELECT COUNT(id_tipo_mesa) FROM tipo_mesa WHERE UPPER(descripcion) = UPPER(?)";
+    try{
+        ps = cc.prepareStatement(sql);
+        ps.setString(1, descripcion);
+        rs = ps.executeQuery();
+        if(rs.next()){
+            return rs.getInt(1);
         }
-        catch (SQLException ex){
-            return 1;
-        }
+        return 1;
+    }
+    catch (SQLException ex){
+        return 1;
+    }
     }
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String descripcion;
-        String capacidad;
-        int capentero;
         int existe;
         descripcion = txtTipoMesa.getText();
-        capacidad = txtCapacidad.getText();
         existe = existeTipoMesa(descripcion);
 
         
-        if ((descripcion.equals("")) || capacidad.equals("")){
-            JOptionPane.showMessageDialog(this, "Debe completar todos los campos","Precaución", JOptionPane.WARNING_MESSAGE);
+        if ((descripcion.equals("")) ){
+            JOptionPane.showMessageDialog(this, "Debe completar el campo","Precaución", JOptionPane.WARNING_MESSAGE);
+            txtTipoMesa.requestFocus();
         }
-
         else{
             int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea agregar este Tipo de Mesa?","Mensajes", JOptionPane.ERROR_MESSAGE);
             if (i == 0){
                 if (existe == 0){
                     try {
-                        capentero =Integer.parseInt(capacidad);
-                        CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?,?)}");
+                        CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?)}");
                         insert.setString(1, descripcion);
-                        insert.setInt(2, capentero);
                         insert.execute();
                         JOptionPane.showMessageDialog(this,"¡Tipo de mesa agregada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-                        txtTipoMesa.setText("");
-                        txtCapacidad.setText("");
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
                             "Mensajes", JOptionPane.ERROR_MESSAGE);
@@ -251,6 +225,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
                 }
             }
         }
+        txtTipoMesa.setText("");
         mostrarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -280,20 +255,15 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
 
     private void btnModificarTipoMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTipoMesaActionPerformed
         String descripcion;
-        String capacidad;
-        int capentero;
         int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea modificar este Tipo de Mesa?","Mensajes", JOptionPane.ERROR_MESSAGE);
         if (i == 0){
             int fila = tblTipoMesa.getSelectedRow();
             String valor = tblTipoMesa.getValueAt(fila, 0).toString();
             descripcion = tblTipoMesa.getValueAt(fila, 1).toString();
-            capacidad = tblTipoMesa.getValueAt(fila, 2).toString();
             try {
-                capentero = Integer.parseInt(capacidad);
-                CallableStatement modificar = cc.prepareCall("{call actualizarTipoMesa(?,?,?)}");
+                CallableStatement modificar = cc.prepareCall("{call actualizarTipoMesa(?,?)}");
                 modificar.setString(1, valor);
                 modificar.setString(2, descripcion);
-                modificar.setInt(3, capentero);
                 modificar.execute();
                 JOptionPane.showMessageDialog(this,"¡Tipo de mesa modificada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
@@ -304,70 +274,16 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         mostrarTabla();
     }//GEN-LAST:event_btnModificarTipoMesaActionPerformed
 
-
-    private void txtCapacidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCapacidadKeyTyped
-        int key = evt.getKeyChar();
-
-        boolean numeros = key >= 48 && key <= 57;
-
-        if (!numeros)
-        {
-            evt.consume();
-        }
-
-        if (txtCapacidad.getText().length() > 2) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtCapacidadKeyTyped
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vista_TipoMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vista_TipoMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vista_TipoMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vista_TipoMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Vista_TipoMesa().setVisible(true);
-            }
-        });
-    }
-
     
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnEliminarTipoMesa;
     private javax.swing.JButton btnModificarTipoMesa;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JTable tblTipoMesa;
-    private javax.swing.JTextField txtCapacidad;
     private javax.swing.JTextField txtTipoMesa;
     // End of variables declaration//GEN-END:variables
 }
