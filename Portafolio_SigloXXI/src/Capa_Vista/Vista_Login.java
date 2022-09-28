@@ -140,13 +140,32 @@ public class Vista_Login extends javax.swing.JFrame {
                 mUsuario = dev.GetUsuario(t);
                 
                 String encript = CR.ecnode(txtpass.getText());
-                if (Pasword.equals(mUsuario.getPass())) {
+                if (Pasword.equals(mUsuario.getPass()) && t.contains("admin")) {
                     JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
                     Vista_Menu visMen = new Vista_Menu();
                     visMen.setVisible(true);
                     this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "La contraseña es incorrecta");
+                }
+                else if (Pasword.equals(mUsuario.getPass()) && t.contains("bodega")) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+                    Vista_Bodega VisBod = new Vista_Bodega();
+                    VisBod.setVisible(true);
+                    this.dispose();
+                }
+                else if (Pasword.equals(mUsuario.getPass()) && t.contains("cocina")) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+                    Vista_Cocina VisCo = new Vista_Cocina();
+                    VisCo.setVisible(true);
+                    this.dispose();
+                }
+                else if (Pasword.equals(mUsuario.getPass()) && t.contains("finanzas")) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
+                    Vista_Finanzas VisFi = new Vista_Finanzas();
+                    VisFi.setVisible(true);
+                    this.dispose();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Usuario y/o contrasena \n incorrectos");
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Contraseña nula", "Error", JOptionPane.ERROR_MESSAGE);

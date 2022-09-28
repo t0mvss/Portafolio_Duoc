@@ -304,6 +304,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         mostrarTabla();
     }//GEN-LAST:event_btnModificarTipoMesaActionPerformed
 
+
     private void txtCapacidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCapacidadKeyTyped
         int key = evt.getKeyChar();
 
@@ -353,6 +354,9 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
             }
         });
     }
+
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
