@@ -23,7 +23,7 @@ import java.util.Iterator;
  */
 public class Vista_Registro extends javax.swing.JFrame {
     
-    ControladorLLenadoComboBox controlador;
+    ControladorLLenadoComboBox controlador = new ControladorLLenadoComboBox();;
     ArrayList ListaTipoUsuario;
     Conexion cn = new Conexion();
     Connection cc = cn.conexion;
@@ -32,6 +32,7 @@ public class Vista_Registro extends javax.swing.JFrame {
      */
     public Vista_Registro() {
         initComponents();
+        LlenarCMBTipoUsuario();
         this.setTitle("Registro");
         this.setLocation(500, 200);
     }
@@ -62,7 +63,7 @@ public class Vista_Registro extends javax.swing.JFrame {
             while (iter.hasNext()){
                 Tipo_Usuario tipoUsuario = (Tipo_Usuario) iter.next();
                 cmbTipoUsuario.addItem(tipoUsuario.toString());
-        }
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,"Hubo un error","Aviso",JOptionPane.WARNING_MESSAGE);
         }
@@ -150,8 +151,6 @@ public class Vista_Registro extends javax.swing.JFrame {
 
         jLabel6.setText("Área");
 
-        cmbTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bodega", "Cocina", "Finanzas", " " }));
-
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_user.png"))); // NOI18N
 
         btnVerPersonal.setText("Ver Personal");
@@ -217,14 +216,13 @@ public class Vista_Registro extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2))
+                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
