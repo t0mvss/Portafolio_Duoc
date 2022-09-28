@@ -23,10 +23,9 @@ public class DevolverPassEncripted {
     private PreparedStatement ps;
     private ResultSet rs;
     private static final Conexion CONEXION = Conexion.obtenerEstadoConexion();
-    
     public Usuario GetUsuario(Object key) {
         Usuario u = null;
-        String sql = "SELECT * FROM usuario WHERE correo = ?";
+        String sql = "SELECT * FROM usuario WHERE username = ?";
          try {
 
             ps = CONEXION.getConexion().prepareStatement(sql);
