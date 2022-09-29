@@ -29,6 +29,7 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
     public Vista_Ver_Personal() {
         initComponents();
         mostrarTabla();
+        this.setTitle("Lista de Personal");
     }
 
     /**
@@ -138,17 +139,18 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(45, 45, 45)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminarUsuario)
                     .addComponent(btnAtras)
                     .addComponent(btnModificarUsuario))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
@@ -170,8 +172,8 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
-        Vista_Registro visReg = new Vista_Registro();
-        visReg.setVisible(true);
+        Vista_Mantenedor_Personal visMan = new Vista_Mantenedor_Personal();
+        visMan.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 

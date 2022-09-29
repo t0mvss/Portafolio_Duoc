@@ -30,6 +30,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
     public Vista_TipoMesa() {
         initComponents();
         mostrarTabla();
+        this.setTitle("Lista de Tipos de Mesa");
     }
 
     /**
@@ -82,17 +83,17 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
 
         tblTipoMesa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "ID", "Descripción"
+                "ID", "Descripción", "Capacidad"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -193,6 +194,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -255,7 +257,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
-        Vista_Menu visMenu = new Vista_Menu();
+        Vista_Admin visMenu = new Vista_Admin();
         visMenu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed

@@ -29,7 +29,7 @@ public class Vista_Login extends javax.swing.JFrame {
     public Vista_Login() {
         initComponents();
         this.setTitle("Login");
-        this.setLocation(500, 200);
+        
 
     }
 
@@ -114,6 +114,7 @@ public class Vista_Login extends javax.swing.JFrame {
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-6, -4, 960, 450));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
@@ -142,7 +143,7 @@ public class Vista_Login extends javax.swing.JFrame {
                 String encript = CR.ecnode(txtpass.getText());
                 if (Pasword.equals(mUsuario.getPass()) && t.contains("admin")) {
                     JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
-                    Vista_Menu visMen = new Vista_Menu();
+                    Vista_Admin visMen = new Vista_Admin();
                     visMen.setVisible(true);
                     this.dispose();
                 }

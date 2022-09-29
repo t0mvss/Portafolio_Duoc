@@ -16,6 +16,7 @@ public class Vista_Cocina extends javax.swing.JFrame {
      */
     public Vista_Cocina() {
         initComponents();
+        this.setTitle("Menu Cocina");
     }
 
     /**
@@ -51,6 +52,7 @@ public class Vista_Cocina extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

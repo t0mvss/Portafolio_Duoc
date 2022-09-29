@@ -16,6 +16,7 @@ public class Vista_Bodega extends javax.swing.JFrame {
      */
     public Vista_Bodega() {
         initComponents();
+        this.setTitle("Menu Bodega");
     }
 
     /**
@@ -51,6 +52,7 @@ public class Vista_Bodega extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
