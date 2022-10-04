@@ -29,26 +29,24 @@ public class ControladorLLenadoComboBox {
         
         
         try {
-        String sql = "Select * From tipo_usuario";
-        con = cn.getConexion();
-        ps = con.prepareStatement(sql);
-        resultset = ps.executeQuery();
-        
-        while (resultset.next()){
-            
-            tipoUsuario = new Tipo_Usuario();
-            tipoUsuario.setId_tipo_usuario(resultset.getInt("id_tipo_usuario"));
-            tipoUsuario.setDescripción(resultset.getString("descripcion"));
-            ListaTipoUsuarios.add(tipoUsuario);
-            
-        }
+            String sql = "Select * From tipo_usuario where descripcion != 'Cliente' and descripcion != 'Administrador'";
+            con = cn.getConexion();
+            ps = con.prepareStatement(sql);
+            resultset = ps.executeQuery();
+
+            while (resultset.next()){
+
+                tipoUsuario = new Tipo_Usuario();
+                tipoUsuario.setId_tipo_usuario(resultset.getInt("id_tipo_usuario"));
+                tipoUsuario.setDescripción(resultset.getString("descripcion"));
+                ListaTipoUsuarios.add(tipoUsuario);
+
+
+            }
             
         } catch (Exception e) {
         
-        
-        
-        
+        }
+        return ListaTipoUsuarios;
     }
-    return ListaTipoUsuarios;
-}
 }
