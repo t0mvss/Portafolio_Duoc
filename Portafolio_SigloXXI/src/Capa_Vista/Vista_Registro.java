@@ -310,9 +310,7 @@ public class Vista_Registro extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+   
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
