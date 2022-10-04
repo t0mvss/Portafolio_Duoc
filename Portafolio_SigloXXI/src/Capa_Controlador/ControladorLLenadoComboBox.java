@@ -29,7 +29,7 @@ public class ControladorLLenadoComboBox {
         
         
         try {
-            String sql = "Select * From tipo_usuario where descripcion != 'Cliente'";
+            String sql = "Select * From tipo_usuario where descripcion != 'Cliente' and descripcion != 'Administrador'";
             con = cn.getConexion();
             ps = con.prepareStatement(sql);
             resultset = ps.executeQuery();
