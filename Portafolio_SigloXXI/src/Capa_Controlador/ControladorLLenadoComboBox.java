@@ -39,6 +39,7 @@ public class ControladorLLenadoComboBox {
             tipoUsuario = new Tipo_Usuario();
             tipoUsuario.setId_tipo_usuario(resultset.getInt("id_tipo_usuario"));
             tipoUsuario.setDescripción(resultset.getString("descripcion"));
+            ListaTipoUsuarios.add(tipoUsuario);
             
         }
             

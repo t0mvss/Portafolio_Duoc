@@ -12,15 +12,15 @@ public class Tipo_Mesa {
     
     int id_tipo_mesa;
     String descripcion;
+    int capacidad;
 
     public Tipo_Mesa() {
-        id_tipo_mesa = 0;
-        descripcion = "";
     }
 
-    public Tipo_Mesa(int id_tipo_mesa, String descripcion) {
+    public Tipo_Mesa(int id_tipo_mesa, String descripcion, int capacidad) {
         this.id_tipo_mesa = id_tipo_mesa;
         this.descripcion = descripcion;
+        this.capacidad = capacidad;
     }
 
     public int getId_tipo_mesa() {
@@ -38,6 +38,16 @@ public class Tipo_Mesa {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+    
+    
 
     @Override
     public String toString() {

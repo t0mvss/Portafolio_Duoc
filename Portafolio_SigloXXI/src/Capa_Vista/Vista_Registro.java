@@ -39,7 +39,7 @@ public class Vista_Registro extends javax.swing.JFrame {
     public int existeUsuario(String username){
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT COUNT(id_usuario) FROM usuario WHERE UPPER(correo) = UPPER(?)";
+        String sql = "SELECT COUNT(id_usuario) FROM usuario WHERE UPPER(username) = UPPER(?)";
         try{
             ps = cc.prepareStatement(sql);
             ps.setString(1, username);
