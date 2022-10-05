@@ -36,13 +36,13 @@ public class Vista_Registro extends javax.swing.JFrame {
         this.setTitle("Registrar Personal");
     }
 
-    public int existeUsuario(String username){
+    public int existeUsuario(String correo){
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT COUNT(id_usuario) FROM usuario WHERE UPPER(username) = UPPER(?)";
+        String sql = "SELECT COUNT(id_usuario) FROM usuario WHERE UPPER(correo) = UPPER(?)";
         try{
             ps = cc.prepareStatement(sql);
-            ps.setString(1, username);
+            ps.setString(1, correo);
             rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getInt(1);
