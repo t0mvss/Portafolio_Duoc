@@ -47,7 +47,7 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
         tblPersonal.setModel(modelo);
 
         String sql = "";
-        sql = "select u.id_usuario as ID, u.nombre as NOMBRE, u.apellido as APELLIDO, u.correo as CORREO, tu.descripcion as AREA from usuario u inner join tipo_usuario tu on u.id_tipo_usuario = tu.id_tipo_usuario where u.id_tipo_usuario != 4 order by AREA asc;";
+        sql = "select u.id_usuario as ID, u.nombre as NOMBRE, u.apellido as APELLIDO, u.username as CORREO, tu.descripcion as AREA from usuario u inner join tipo_usuario tu on u.id_tipo_usuario = tu.id_tipo_usuario where u.id_tipo_usuario != 4 order by AREA asc;";
         String [] dato = new String[5];
         try{
             Statement st = cc.createStatement();
@@ -219,40 +219,7 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
         mostrarTabla();
     }//GEN-LAST:event_btnModificarUsuarioActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vista_Ver_Personal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vista_Ver_Personal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vista_Ver_Personal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vista_Ver_Personal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Vista_Ver_Personal().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;

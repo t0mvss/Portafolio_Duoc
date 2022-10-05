@@ -37,7 +37,7 @@ public class Conexion {
             
         }
     }
-
+    
     public synchronized static Conexion obtenerEstadoConexion(){
         if(instance == null)
         {
@@ -52,6 +52,6 @@ public class Conexion {
 
     public void cerrarConexion(){
         instance = null;
-    }
+    } 
 }
 

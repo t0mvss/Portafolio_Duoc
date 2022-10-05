@@ -61,11 +61,6 @@ public class Vista_Admin extends javax.swing.JFrame {
         });
 
         btnMesas.setText("Mesas");
-        btnMesas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMesasActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,12 +116,6 @@ public class Vista_Admin extends javax.swing.JFrame {
         visTipoMesa.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTipoMesaActionPerformed
-
-    private void btnMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMesasActionPerformed
-        Vista_Mesa visMesa = new Vista_Mesa();
-        visMesa.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnMesasActionPerformed
 
     /**
      * @param args the command line arguments
