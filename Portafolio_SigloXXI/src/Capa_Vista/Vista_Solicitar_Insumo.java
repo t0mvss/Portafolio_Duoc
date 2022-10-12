@@ -4,6 +4,16 @@
  */
 package Capa_Vista;
 
+import Capa_Conexion.Conexion;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author boris
@@ -13,8 +23,14 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
     /**
      * Creates new form Vista_Solicitar_Insumo
      */
+    Conexion cn = new Conexion();
+    Connection cc = cn.conexion;
+
     public Vista_Solicitar_Insumo() {
         initComponents();
+        mostrarTabla();
+        mostrarTablaSolicitud();
+        setTitle("Solicitar Insumos");
     }
 
     /**
@@ -27,7 +43,7 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblProductos = new javax.swing.JTable();
+        tblInsumos = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
         txtCantidad = new javax.swing.JTextField();
         btnRealizarSoli = new javax.swing.JButton();
@@ -37,10 +53,11 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         tblSolicitud = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+        tblInsumos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -51,7 +68,7 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblProductos);
+        jScrollPane1.setViewportView(tblInsumos);
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +112,13 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
 
         jLabel3.setText("Cantidad");
 
+        btnCancelar.setText("Cancelar Solicitud");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,10 +136,12 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel2)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(156, 156, 156)
-                                .addComponent(btnRealizarSoli))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(20, 20, 20)
+                                .addComponent(btnRealizarSoli, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(74, 74, 74)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -153,7 +179,8 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRealizarSoli)
-                    .addComponent(btnAtras))
+                    .addComponent(btnAtras)
+                    .addComponent(btnCancelar))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -161,12 +188,143 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void mostrarTabla(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("CANTIDAD");
+        tblInsumos.setModel(modelo);
+
+        String sql = "";
+        sql = "select i.id_insumos, i.nombre, s.cantidad from insumos i inner join stock_insumos s on i.id_insumos = s.id_insumos order by id_insumos asc;";
+        String [] dato = new String[3];
+        try{
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                dato[0] = rs.getString(1);
+                dato[1] = rs.getString(2);
+                dato[2] = rs.getString(3);
+                modelo.addRow(dato);
+            }
+            tblInsumos.setModel(modelo);
+        }
+        catch(SQLException e){
+        }
+
+    }
+
+    public void mostrarTablaSolicitud(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("CANTIDAD");
+        modelo.addColumn("ESTADO");
+        tblSolicitud.setModel(modelo);
+        String sql = "";
+        sql = "select si.id_solicitud_insumo, i.nombre, si.cantidad, si.estado from solicitud_insumo si inner join insumos i on si.id_insumo = i.id_insumos where estado = 'En proceso' order by id_insumo asc;";
+        String [] dato = new String[4];
+        try{
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                dato[0] = rs.getString(1);
+                dato[1] = rs.getString(2);
+                dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
+                modelo.addRow(dato);
+            }
+            tblSolicitud.setModel(modelo);
+        }
+        catch(SQLException e){
+        }
+
+    }
+
+//ver bien la forma de manejar el estado, ya que me agrega cuando está en estado de realizada
+    public int existeInsumo(int insumo){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT COUNT(id_solicitud_insumo) FROM solicitud_insumo WHERE id_insumo = ? and fecha = curdate() and estado = 'En proceso';";
+        try{
+            ps = cc.prepareStatement(sql);
+            ps.setInt(1, insumo);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            return 1;
+        }
+        catch (SQLException ex){
+            return 1;
+        }
+    }
+
+
     private void btnRealizarSoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarSoliActionPerformed
-        // TODO add your handling code here:
+        int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea realizar esta Solicitud?","Mensajes", JOptionPane.ERROR_MESSAGE);
+        if (i == 0){
+            try {
+                CallableStatement modificar = cc.prepareCall("{call actualizarSolicitud()}");
+                modificar.execute();
+                JOptionPane.showMessageDialog(this,"¡Solicitud realizada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        mostrarTablaSolicitud();
+                   
     }//GEN-LAST:event_btnRealizarSoliActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        String cantidad;
+        int capentero;
+        int existe;
+        cantidad = txtCantidad.getText();
+        int fila = tblInsumos.getSelectedRow();
+        String valor = tblInsumos.getValueAt(fila, 0).toString();
+        int id_insumo = Integer.parseInt(valor);
+        existe = existeInsumo(id_insumo);
+
+        if ((cantidad.equals(""))){
+            JOptionPane.showMessageDialog(this, "Debe ingresar una cantidad","Precaución", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea agregar este Insumo a la solicitud?","Mensajes", JOptionPane.ERROR_MESSAGE);
+            if (i == 0){
+                if (existe == 0){
+                    try {
+                        capentero =Integer.parseInt(cantidad);
+                        CallableStatement insert = cc.prepareCall("{call insertarSolicitud(?,?)}");
+                        insert.setString(1, valor);
+                        insert.setInt(2, capentero);
+                        insert.execute();
+                        JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                        txtCantidad.setText("");
+                    }catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                            "Mensajes", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    try {
+                        capentero =Integer.parseInt(cantidad);
+                        CallableStatement insert = cc.prepareCall("{call insertarInsumoSolicitud(?,?)}");
+                        insert.setString(1, valor);
+                        insert.setInt(2, capentero);
+                        insert.execute();
+                        JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                        txtCantidad.setText("");
+                    }catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                            "Mensajes", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }
+        mostrarTablaSolicitud();
+        mostrarTabla();                                  
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -174,6 +332,21 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         visBod.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea cancelar la Solicitud?","Mensajes", JOptionPane.ERROR_MESSAGE);
+        if (i == 0){
+            try {
+                CallableStatement delete = cc.prepareCall("{call cancelarSolicitud()}");
+                delete.execute();
+                JOptionPane.showMessageDialog(this,"¡Solicitud cancelada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        mostrarTablaSolicitud();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,13 +386,14 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRealizarSoli;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tblProductos;
+    private javax.swing.JTable tblInsumos;
     private javax.swing.JTable tblSolicitud;
     private javax.swing.JTextField txtCantidad;
     // End of variables declaration//GEN-END:variables

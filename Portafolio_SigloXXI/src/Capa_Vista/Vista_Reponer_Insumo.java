@@ -4,6 +4,13 @@
  */
 package Capa_Vista;
 
+import Capa_Conexion.Conexion;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author boris
@@ -13,8 +20,14 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
     /**
      * Creates new form Vista_Reponer_Insumo
      */
+
+    Conexion cn = new Conexion();
+    Connection cc = cn.conexion;
+    
     public Vista_Reponer_Insumo() {
         initComponents();
+        mostrarTabla();
+        setTitle("Reponer Insumos");
     }
 
     /**
@@ -30,7 +43,7 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAdmin = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblProductos = new javax.swing.JTable();
+        tblInsumos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnModif = new javax.swing.JButton();
@@ -54,7 +67,7 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblAdmin);
 
-        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+        tblInsumos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -65,7 +78,7 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(tblProductos);
+        jScrollPane2.setViewportView(tblInsumos);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Comprados");
@@ -130,6 +143,32 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void mostrarTabla(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("CANTIDAD");
+        tblInsumos.setModel(modelo);
+
+        String sql = "";
+        sql = "select i.id_insumos, i.nombre, s.cantidad from insumos i inner join stock_insumos s on i.id_insumos = s.id_insumos order by id_insumos asc;";
+        String [] dato = new String[3];
+        try{
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                dato[0] = rs.getString(1);
+                dato[1] = rs.getString(2);
+                dato[2] = rs.getString(3);
+                modelo.addRow(dato);
+            }
+            tblInsumos.setModel(modelo);
+        }
+        catch(SQLException e){
+        }
+
+    }
+
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         Vista_Bodega visBod = new Vista_Bodega();
         visBod.setVisible(true);
@@ -180,6 +219,6 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblAdmin;
-    private javax.swing.JTable tblProductos;
+    private javax.swing.JTable tblInsumos;
     // End of variables declaration//GEN-END:variables
 }
