@@ -27,14 +27,15 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
 
     public void mostrarTabla(){
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
         modelo.addColumn("PEDIDO");
         modelo.addColumn("CANTIDAD");
+        modelo.addColumn("ID USUARIO");
+        modelo.addColumn("ESTADO");
         tblPedidos.setModel(modelo);
 
         String sql = "";
-        sql = "";
-        String [] dato = new String[3];
+        sql = "SELECT p.nombre,pd.cantidad, pd.id_usuario, pd.estado FROM pedido_detalle pd INNER JOIN platos p ON (pd.id_platos = p.id_platos);";
+        String [] dato = new String[4];
         try{
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -42,6 +43,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
                 dato[0] = rs.getString(1);
                 dato[1] = rs.getString(2);
                 dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
                 modelo.addRow(dato);
             }
             tblPedidos.setModel(modelo);
