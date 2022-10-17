@@ -6,11 +6,18 @@
 package Capa_Vista;
 
 import Capa_Conexion.Conexion;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -20,18 +27,20 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
 
     Conexion cn = new Conexion();
     Connection cc = cn.conexion;
+    TableRowSorter trs;
+    DefaultTableModel modelo = new DefaultTableModel();
     public Vista_Pedidos_Pendientes() {
         initComponents();
         mostrarTabla();
     }
 
     public void mostrarTabla(){
-        DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("PEDIDO");
         modelo.addColumn("CANTIDAD");
         modelo.addColumn("ID USUARIO");
         modelo.addColumn("ESTADO");
         tblPedidos.setModel(modelo);
+        
 
         String sql = "";
         sql = "SELECT p.nombre,pd.cantidad, pd.id_usuario, pd.estado FROM pedido_detalle pd INNER JOIN platos p ON (pd.id_platos = p.id_platos);";
@@ -59,6 +68,9 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPedidos = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
+        txtFiltro = new javax.swing.JTextField();
+        btnEnviarPedido = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,26 +94,60 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             }
         });
 
+        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFiltroKeyTyped(evt);
+            }
+        });
+
+        btnEnviarPedido.setText("Enviar Pedido");
+        btnEnviarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarPedidoActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refrescar");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(140, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(39, 39, 39)
+                .addComponent(btnEnviarPedido)
+                .addGap(18, 18, 18)
+                .addComponent(btnRefresh)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAtras)
                 .addGap(33, 33, 33))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(20, 20, 20)
+                .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(btnAtras)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAtras)
+                    .addComponent(btnEnviarPedido)
+                    .addComponent(btnRefresh))
                 .addGap(23, 23, 23))
         );
 
@@ -114,11 +160,50 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
+    private void txtFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyTyped
+        
+        
+        
+        txtFiltro.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), 3));
+                
+            }
+            
+        });
+        trs = new TableRowSorter(modelo);
+        tblPedidos.setRowSorter(trs);
+    }//GEN-LAST:event_txtFiltroKeyTyped
+
+    private void btnEnviarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarPedidoActionPerformed
+        int i = JOptionPane.showConfirmDialog(this,"¿El pedido está listo para ser enviado?","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+        if (i == 0){
+            try {
+                CallableStatement modificar = cc.prepareCall("{call actualizarPedidoDetalle()}");
+                modificar.execute();
+                JOptionPane.showMessageDialog(this,"¡Pedido Enviado con Éxito!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                modelo.fireTableDataChanged();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEnviarPedidoActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnEnviarPedido;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblPedidos;
+    private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 }
