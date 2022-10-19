@@ -149,6 +149,7 @@ public class Vista_Solicitudes extends javax.swing.JFrame {
         id_soli = tblSolicitudes.getValueAt(fila, 0).toString();
         Vista_Detalle_Solicitud visDe = new Vista_Detalle_Solicitud();
         visDe.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnDetalleActionPerformed
 
     /**
