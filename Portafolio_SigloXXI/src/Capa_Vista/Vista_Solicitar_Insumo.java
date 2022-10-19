@@ -123,12 +123,12 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 20, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -140,20 +140,18 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(btnRealizarSoli, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(74, 74, 74)
+                                .addGap(70, 70, 70)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(36, 36, 36))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnAtras)
-                                    .addComponent(btnAgregar))
+                                    .addComponent(btnAgregar)
+                                    .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(20, 20, 20))))))
         );
         layout.setVerticalGroup(
@@ -193,36 +191,11 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         modelo.addColumn("ID");
         modelo.addColumn("NOMBRE");
         modelo.addColumn("CANTIDAD");
+        modelo.addColumn("MEDIDA");
         tblInsumos.setModel(modelo);
 
         String sql = "";
-        sql = "select i.id_insumos, i.nombre, s.cantidad from insumos i inner join stock_insumos s on i.id_insumos = s.id_insumos order by id_insumos asc;";
-        String [] dato = new String[3];
-        try{
-            Statement st = cc.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                dato[0] = rs.getString(1);
-                dato[1] = rs.getString(2);
-                dato[2] = rs.getString(3);
-                modelo.addRow(dato);
-            }
-            tblInsumos.setModel(modelo);
-        }
-        catch(SQLException e){
-        }
-
-    }
-
-    public void mostrarTablaSolicitud(){
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("NOMBRE");
-        modelo.addColumn("CANTIDAD");
-        modelo.addColumn("ESTADO");
-        tblSolicitud.setModel(modelo);
-        String sql = "";
-        sql = "select si.id_solicitud_insumo, i.nombre, si.cantidad, si.estado from solicitud_insumo si inner join insumos i on si.id_insumo = i.id_insumos where estado = 'En proceso' order by id_insumo asc;";
+        sql = "select i.id_insumos, i.nombre, s.cantidad, tp.descripcion from insumos i inner join stock_insumos s on i.id_insumos = s.id_insumos inner join tipo_medida tp on tp.id_tipo_medida = i.id_tipo_medida order by id_insumos asc;";
         String [] dato = new String[4];
         try{
             Statement st = cc.createStatement();
@@ -234,6 +207,37 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                 dato[3] = rs.getString(4);
                 modelo.addRow(dato);
             }
+            tblInsumos.setModel(modelo);
+        }
+        catch(SQLException e){
+        }
+
+    }
+
+    public void mostrarTablaSolicitud(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID SOLICITUD");
+        modelo.addColumn("ID DETALLE");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("CANTIDAD");
+        modelo.addColumn("MEDIDA");
+        modelo.addColumn("ESTADO");
+        tblSolicitud.setModel(modelo);
+        String sql = "";
+        sql = "select de.id_solicitud_insumo, de.id_detalle, i.nombre, de.cantidad, tp.descripcion, si.estado from solicitud_insumo si inner join detalle_solicitud de on si.id_solicitud_insumo = de.id_solicitud_insumo inner join insumos i on i.id_insumos = de.id_insumo inner join tipo_medida tp on tp.id_tipo_medida = i.id_tipo_medida where si.estado = 'En proceso' order by i.id_insumos asc;";
+        String [] dato = new String[6];
+        try{
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                dato[0] = rs.getString(1);
+                dato[1] = rs.getString(2);
+                dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
+                dato[4] = rs.getString(5);
+                dato[5] = rs.getString(6);
+                modelo.addRow(dato);
+            }
             tblSolicitud.setModel(modelo);
         }
         catch(SQLException e){
@@ -241,11 +245,11 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
 
     }
 
-//ver bien la forma de manejar el estado, ya que me agrega cuando está en estado de realizada
+
     public int existeInsumo(int insumo){
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT COUNT(id_solicitud_insumo) FROM solicitud_insumo WHERE id_insumo = ? and fecha = curdate() and estado = 'En proceso';";
+        String sql = "SELECT COUNT(id_solicitud_insumo) FROM detalle_solicitud WHERE id_insumo = ? and fecha = curdate() and estado = 'En proceso';";
         try{
             ps = cc.prepareStatement(sql);
             ps.setInt(1, insumo);
@@ -285,7 +289,7 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         int fila = tblInsumos.getSelectedRow();
         String valor = tblInsumos.getValueAt(fila, 0).toString();
         int id_insumo = Integer.parseInt(valor);
-        existe = existeInsumo(id_insumo);
+        //existe = existeInsumo(id_insumo);
 
         if ((cantidad.equals(""))){
             JOptionPane.showMessageDialog(this, "Debe ingresar una cantidad","Precaución", JOptionPane.WARNING_MESSAGE);
@@ -293,21 +297,7 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         else{
             int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea agregar este Insumo a la solicitud?","Mensajes", JOptionPane.ERROR_MESSAGE);
             if (i == 0){
-                if (existe == 0){
-                    try {
-                        capentero =Integer.parseInt(cantidad);
-                        CallableStatement insert = cc.prepareCall("{call insertarSolicitud(?,?)}");
-                        insert.setString(1, valor);
-                        insert.setInt(2, capentero);
-                        insert.execute();
-                        JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-                        txtCantidad.setText("");
-                    }catch (Exception e) {
-                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
-                            "Mensajes", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                else{
+                //if (existe == 0){
                     try {
                         capentero =Integer.parseInt(cantidad);
                         CallableStatement insert = cc.prepareCall("{call insertarInsumoSolicitud(?,?)}");
@@ -321,8 +311,20 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                             "Mensajes", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-            }
-        }
+               /* else{
+                    try {
+                        capentero =Integer.parseInt(cantidad);
+                        CallableStatement insert = cc.prepareCall("{call insertarInsumoSolicitud(?,?)}");
+                        insert.setString(1, valor);
+                        insert.setInt(2, capentero);
+                        insert.execute();
+                        JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                        txtCantidad.setText("");
+                    }catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                            "Mensajes", JOptionPane.ERROR_MESSAGE);
+                    }*/
+                }
         mostrarTablaSolicitud();
         mostrarTabla();                                  
     }//GEN-LAST:event_btnAgregarActionPerformed

@@ -5,12 +5,16 @@
 package Capa_Vista;
 
 import Capa_Conexion.Conexion;
+import Capa_Modelo.Tipo_Medida;
+import Capa_Controlador.ControladorCmbTipoMedida;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,12 +27,15 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
     /**
      * Creates new form Vista_Mantener_Inventario
      */
+    ControladorCmbTipoMedida controlador = new ControladorCmbTipoMedida();
+    ArrayList ListaTipoMed;
     Conexion cn = new Conexion();
     Connection cc = cn.conexion;
 
     public Vista_Mantener_Inventario() {
         initComponents();
         mostrarTabla();
+        LlenarCMBTipoMed();
         setTitle("Mantenedor Insumos");
     }
 
@@ -49,6 +56,8 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
         tblInsumos = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
+        cmbMedida = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,6 +110,8 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Medida");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,39 +120,51 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAtras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(20, 20, 20))
+                            .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(btnAgregar)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 96, Short.MAX_VALUE)
                         .addComponent(btnModificar)
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar)
                         .addGap(18, 18, 18)
                         .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
 
@@ -154,11 +177,12 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
         modelo.addColumn("ID");
         modelo.addColumn("NOMBRE");
         modelo.addColumn("CANTIDAD");
+        modelo.addColumn("MEDIDA");
         tblInsumos.setModel(modelo);
 
         String sql = "";
-        sql = "select i.id_insumos, i.nombre, s.cantidad from insumos i inner join stock_insumos s on i.id_insumos = s.id_insumos order by id_insumos asc;";
-        String [] dato = new String[3];
+        sql = "select i.id_insumos, i.nombre, s.cantidad, tp.descripcion from insumos i inner join stock_insumos s on i.id_insumos = s.id_insumos inner join tipo_medida tp on tp.id_tipo_medida = i.id_tipo_medida order by i.id_insumos asc;";
+        String [] dato = new String[4];
         try{
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -166,6 +190,7 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
                 dato[0] = rs.getString(1);
                 dato[1] = rs.getString(2);
                 dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
                 modelo.addRow(dato);
             }
             tblInsumos.setModel(modelo);
@@ -173,6 +198,21 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
         catch(SQLException e){
         }
 
+    }
+
+    public void LlenarCMBTipoMed(){
+        try {
+            cmbMedida.removeAllItems();
+            ListaTipoMed = controlador.getListaTipoMedida();
+            Iterator iter = ListaTipoMed.iterator();
+            while (iter.hasNext()){
+                Tipo_Medida tipoMed = (Tipo_Medida) iter.next();
+                cmbMedida.addItem(tipoMed.toString());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,"Hubo un error","Aviso",JOptionPane.WARNING_MESSAGE);
+        }
+        
     }
 
     public int existeInsumo(String nombre){
@@ -202,8 +242,13 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String nombre;
         int existe;
+        String tipomed;
+        int idtipomed = 0;
         nombre = txtNombre.getText();
         existe = existeInsumo(nombre);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "";
         if ((nombre.equals(""))){
             JOptionPane.showMessageDialog(this, "Debe ingresar un nombre","Precaución", JOptionPane.WARNING_MESSAGE);
         }
@@ -212,8 +257,17 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
             if (i == 0){
                 if (existe == 0){
                     try {
-                        CallableStatement insert = cc.prepareCall("{call insertarInsumo(?)}");
+                        tipomed = cmbMedida.getSelectedItem().toString();
+                        sql = "select id_tipo_medida from tipo_medida Where descripcion = ?;";
+                        ps = cc.prepareStatement(sql);
+                        ps.setString(1, tipomed);
+                        rs = ps.executeQuery();
+                       if (rs.next()){
+                            idtipomed = Integer.parseInt(rs.getString("id_tipo_medida"));
+                        }
+                        CallableStatement insert = cc.prepareCall("{call insertarInsumo(?,?)}");
                         insert.setString(1, nombre);
+                        insert.setInt(2,idtipomed);
                         insert.execute();
                         JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
                         txtNombre.setText("");
@@ -263,15 +317,29 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         String nombre;
+        String descripcion;
+        int idtipo = 0;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "";
+        sql = "select id_tipo_medida from tipo_medida where descripcion = ?;";
         int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea modificar este Insumo?","Mensajes", JOptionPane.ERROR_MESSAGE);
         if (i == 0){
             int fila = tblInsumos.getSelectedRow();
             String valor = tblInsumos.getValueAt(fila, 0).toString();
             nombre = tblInsumos.getValueAt(fila, 1).toString();
+            descripcion = tblInsumos.getValueAt(fila, 3).toString();
             try {
-                CallableStatement modificar = cc.prepareCall("{call actualizarInsumo(?,?)}");
+                ps = cc.prepareStatement(sql);
+                ps.setString(1, descripcion);
+                rs = ps.executeQuery();
+                if (rs.next()){
+                    idtipo = Integer.parseInt(rs.getString("id_tipo_medida"));
+                }
+                CallableStatement modificar = cc.prepareCall("{call actualizarInsumo(?,?,?)}");
                 modificar.setString(1, valor);
                 modificar.setString(2, nombre);
+                modificar.setInt(3, idtipo);
                 modificar.execute();
                 JOptionPane.showMessageDialog(this,"¡Insumo modificado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
@@ -322,7 +390,9 @@ public class Vista_Mantener_Inventario extends javax.swing.JFrame {
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JComboBox<String> cmbMedida;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblInsumos;
     private javax.swing.JTextField txtNombre;
