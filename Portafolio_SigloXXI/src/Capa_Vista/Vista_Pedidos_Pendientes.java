@@ -6,11 +6,19 @@
 package Capa_Vista;
 
 import Capa_Conexion.Conexion;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import Capa_Modelo.TextPrompt;
 
 /**
  *
@@ -20,21 +28,26 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
 
     Conexion cn = new Conexion();
     Connection cc = cn.conexion;
+    TableRowSorter trs;
+    DefaultTableModel modelo = new DefaultTableModel();
     public Vista_Pedidos_Pendientes() {
         initComponents();
         mostrarTabla();
+        TextPrompt placeholder = new TextPrompt("ESTADO", txtFiltro1);
+        TextPrompt placeholder1 = new TextPrompt("ID USUARIO", txtFiltro);
     }
 
     public void mostrarTabla(){
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
         modelo.addColumn("PEDIDO");
         modelo.addColumn("CANTIDAD");
+        modelo.addColumn("ID USUARIO");
+        modelo.addColumn("ESTADO");
         tblPedidos.setModel(modelo);
+        
 
         String sql = "";
-        sql = "";
-        String [] dato = new String[3];
+        sql = "SELECT p.nombre,pd.cantidad, pd.id_usuario, pd.estado FROM pedido_detalle pd INNER JOIN platos p ON (pd.id_platos = p.id_platos);";
+        String [] dato = new String[4];
         try{
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -42,6 +55,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
                 dato[0] = rs.getString(1);
                 dato[1] = rs.getString(2);
                 dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
                 modelo.addRow(dato);
             }
             tblPedidos.setModel(modelo);
@@ -54,9 +68,20 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPedidos = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
+        txtFiltro = new javax.swing.JTextField();
+        btnEnviarPedido = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtFiltro1 = new javax.swing.JTextPane();
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,26 +105,69 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             }
         });
 
+        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFiltroKeyTyped(evt);
+            }
+        });
+
+        btnEnviarPedido.setText("Enviar Pedido");
+        btnEnviarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarPedidoActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refrescar");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
+        txtFiltro1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFiltro1KeyTyped(evt);
+            }
+        });
+        jScrollPane2.setViewportView(txtFiltro1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(140, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(39, 39, 39)
+                .addComponent(btnEnviarPedido)
+                .addGap(18, 18, 18)
+                .addComponent(btnRefresh)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAtras)
                 .addGap(33, 33, 33))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(btnAtras)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAtras)
+                    .addComponent(btnEnviarPedido)
+                    .addComponent(btnRefresh))
                 .addGap(23, 23, 23))
         );
 
@@ -112,11 +180,68 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
-    
+    private void txtFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyTyped
+        
+        txtFiltro.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), 2));
+                
+            }
+            
+        });
+        trs = new TableRowSorter(modelo);
+        tblPedidos.setRowSorter(trs);
+    }//GEN-LAST:event_txtFiltroKeyTyped
+
+    private void btnEnviarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarPedidoActionPerformed
+        int i = JOptionPane.showConfirmDialog(this,"¿El pedido está listo para ser enviado?","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+        if (i == 0){
+            int fila = tblPedidos.getSelectedRow();
+            String id_usuario = tblPedidos.getValueAt(fila, 2).toString();
+            try {
+                CallableStatement modificar = cc.prepareCall("{call actualizarPedidoDetalle1(?)}");
+                modificar.setString(1, id_usuario);
+                modificar.execute();
+                JOptionPane.showMessageDialog(this,"¡Pedido Enviado con Éxito!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                modelo.fireTableDataChanged();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEnviarPedidoActionPerformed
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        
+    }//GEN-LAST:event_btnRefreshActionPerformed
+
+    private void txtFiltro1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltro1KeyTyped
+       
+        txtFiltro1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro1.getText(), 3));
+                
+            }
+            
+        });
+        trs = new TableRowSorter(modelo);
+        tblPedidos.setRowSorter(trs);
+    }//GEN-LAST:event_txtFiltro1KeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnEnviarPedido;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTable tblPedidos;
+    private javax.swing.JTextField txtFiltro;
+    private javax.swing.JTextPane txtFiltro1;
     // End of variables declaration//GEN-END:variables
 }
