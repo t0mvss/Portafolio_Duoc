@@ -7,6 +7,7 @@ package Capa_Vista;
 
 import Capa_Conexion.Conexion;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,21 +21,26 @@ public class Vista_Detalle_Receta extends javax.swing.JFrame {
 
     Conexion cn = new Conexion();
     Connection cc = cn.conexion;
+    ResultSet rs;
+    PreparedStatement ps = null;
     public Vista_Detalle_Receta() {
         initComponents();
         mostrarTabla();
     }
     public void mostrarTabla(){
+        int id_receta;
+        Vista_Receta visR = new Vista_Receta();
+        id_receta = Integer.parseInt(visR.id_receta);
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("RECETA");
+        modelo.addColumn("INGREDIENTES");
         tblDetalle.setModel(modelo);
-
         String sql = "";
-        sql = "SELECT i.nombre FROM receta_insumos ri INNER JOIN insumos i on (ri.id_insumos = i.id_insumos) WHERE ri.id_receta = 1;";
+        sql = "SELECT i.nombre FROM receta_insumos ri INNER JOIN insumos i on (ri.id_insumos = i.id_insumos) WHERE ri.id_receta = ?;";
         String [] dato = new String[1];
         try{
-            Statement st = cc.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            ps = cc.prepareStatement(sql);
+            ps.setInt(1, id_receta);
+            rs = ps.executeQuery();
             while(rs.next()){
                 dato[0] = rs.getString(1);
                 modelo.addRow(dato);

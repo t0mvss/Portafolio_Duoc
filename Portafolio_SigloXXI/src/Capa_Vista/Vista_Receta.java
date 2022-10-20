@@ -124,11 +124,10 @@ public class Vista_Receta extends javax.swing.JFrame {
         visCo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
-
+    public static String id_receta = "";
     private void btnDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalleActionPerformed
         int fila = tblRecetas.getSelectedRow();
-        String id_receta = tblRecetas.getValueAt(fila, 0).toString();
-        
+        id_receta = tblRecetas.getValueAt(fila, 0).toString();
         Vista_Detalle_Receta visDeRe = new Vista_Detalle_Receta();
         visDeRe.setVisible(true);
         this.dispose();
