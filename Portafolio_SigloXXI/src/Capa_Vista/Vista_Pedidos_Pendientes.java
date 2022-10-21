@@ -38,6 +38,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
     }
 
     public void mostrarTabla(){
+        DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("PEDIDO");
         modelo.addColumn("CANTIDAD");
         modelo.addColumn("ID USUARIO");
@@ -87,13 +88,13 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
 
         tblPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(tblPedidos);
@@ -196,21 +197,22 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFiltroKeyTyped
 
     private void btnEnviarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarPedidoActionPerformed
+        int fila = tblPedidos.getSelectedRow();
+        String id_usuario = tblPedidos.getValueAt(fila, 2).toString();
         int i = JOptionPane.showConfirmDialog(this,"¿El pedido está listo para ser enviado?","Mensajes", JOptionPane.INFORMATION_MESSAGE);
         if (i == 0){
-            int fila = tblPedidos.getSelectedRow();
-            String id_usuario = tblPedidos.getValueAt(fila, 2).toString();
+            
             try {
                 CallableStatement modificar = cc.prepareCall("{call actualizarPedidoDetalle1(?)}");
                 modificar.setString(1, id_usuario);
                 modificar.execute();
                 JOptionPane.showMessageDialog(this,"¡Pedido Enviado con Éxito!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-                modelo.fireTableDataChanged();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
                     "Mensajes", JOptionPane.ERROR_MESSAGE);
             }
         }
+        mostrarTabla();
     }//GEN-LAST:event_btnEnviarPedidoActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
