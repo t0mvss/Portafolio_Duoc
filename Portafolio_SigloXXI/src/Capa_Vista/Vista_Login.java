@@ -65,13 +65,10 @@ public class Vista_Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Contraseña");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 320, -1, -1));
-
-        txtUser.setBackground(new java.awt.Color(255, 255, 255));
         getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 270, 140, -1));
 
         btnIngresar.setBackground(new java.awt.Color(255, 255, 255));
         btnIngresar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnIngresar.setForeground(new java.awt.Color(0, 0, 0));
         btnIngresar.setText("Ingresar");
         btnIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -85,7 +82,11 @@ public class Vista_Login extends javax.swing.JFrame {
         });
         getContentPane().add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 370, 120, -1));
 
-        txtpass.setBackground(new java.awt.Color(255, 255, 255));
+        txtpass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpassActionPerformed(evt);
+            }
+        });
         getContentPane().add(txtpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 320, 140, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -169,6 +170,10 @@ public class Vista_Login extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void txtpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtpassActionPerformed
 
     /**
      * @param args the command line arguments

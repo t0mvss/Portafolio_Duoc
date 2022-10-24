@@ -39,7 +39,7 @@ public class Vista_Registro extends javax.swing.JFrame {
     public int existeUsuario(String correo){
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT COUNT(id_usuario) FROM usuario WHERE UPPER(correo) = UPPER(?)";
+        String sql = "SELECT COUNT(id) FROM usuario WHERE UPPER(user_name) = UPPER(?)";
         try{
             ps = cc.prepareStatement(sql);
             ps.setString(1, correo);
@@ -148,6 +148,12 @@ public class Vista_Registro extends javax.swing.JFrame {
         });
 
         jLabel6.setText("Área");
+
+        cmbTipoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTipoUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_user.png"))); // NOI18N
 
@@ -272,7 +278,7 @@ public class Vista_Registro extends javax.swing.JFrame {
             if (i == 0){
                 if (existe == 0){
                     try {
-                        int tipoUser = cmbTipoUsuario.getSelectedIndex()+1;
+                        int tipoUser = cmbTipoUsuario.getSelectedIndex()+3;
 
                         Capa_Modelo.Encoder CR = new Encoder();
 
@@ -283,7 +289,7 @@ public class Vista_Registro extends javax.swing.JFrame {
                         insert.setString(2, apellido);
                         insert.setString(3, correo);
                         insert.setString(4, encript); 
-                        insert.setInt(5, tipoUser);
+                        insert.setInt(5, tipoUser); 
                         insert.execute();
 
                         JOptionPane.showMessageDialog(this,"¡Usuario agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
@@ -291,7 +297,6 @@ public class Vista_Registro extends javax.swing.JFrame {
                         txtApellido.setText("");
                         txtCorreo.setText("");
                         txtPass.setText("");
-                        cmbTipoUsuario.setSelectedIndex(0);
                     } 
                     catch (Exception e) {
                         JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos","Mensajes", JOptionPane.ERROR_MESSAGE);
@@ -309,6 +314,10 @@ public class Vista_Registro extends javax.swing.JFrame {
         visMan.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void cmbTipoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTipoUsuarioActionPerformed
 
    
     

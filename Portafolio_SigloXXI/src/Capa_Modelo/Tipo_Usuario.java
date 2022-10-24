@@ -12,33 +12,33 @@ package Capa_Modelo;
 public class Tipo_Usuario {
     
     
-    int id_tipo_usuario;
-    String descripción;
+    int id;
+    String role_name;
 
     public Tipo_Usuario() {
-        id_tipo_usuario =0;
-        descripción = "";
+        id =0;
+        role_name = "";
     }
 
-    public Tipo_Usuario(int id_tipo_usuario, String descripción) {
-        this.id_tipo_usuario = id_tipo_usuario;
-        this.descripción = descripción;
+    public Tipo_Usuario(int id, String role_name) {
+        this.id = id;
+        this.role_name = role_name;
     }
 
     public int getId_tipo_usuario() {
-        return id_tipo_usuario;
+        return id;
     }
 
-    public void setId_tipo_usuario(int id_tipo_usuario) {
-        this.id_tipo_usuario = id_tipo_usuario;
+    public void setId_tipo_usuario(int id) {
+        this.id = id;
     }
 
     public String getDescripción() {
-        return descripción;
+        return role_name;
     }
 
-    public void setDescripción(String descripción) {
-        this.descripción = descripción;
+    public void setDescripción(String role_name) {
+        this.role_name = role_name;
     }
 
     @Override

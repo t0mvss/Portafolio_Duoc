@@ -43,11 +43,12 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         modelo.addColumn("ID");
         modelo.addColumn("DESCRIPCIÓN");
         modelo.addColumn("CAPACIDAD");
+        modelo.addColumn("FOTO");
         tblTipoMesa.setModel(modelo);
 
         String sql = "";
         sql = "select * from tipo_mesa";
-        String [] dato = new String[3];
+        String [] dato = new String[4];
         try{
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -55,6 +56,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
                 dato[0] = rs.getString(1);
                 dato[1] = rs.getString(2);
                 dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
                 modelo.addRow(dato);
             }
             tblTipoMesa.setModel(modelo);
@@ -72,11 +74,13 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
         btnAtras = new javax.swing.JButton();
         btnEliminarTipoMesa = new javax.swing.JButton();
-        txtTipoMesa = new javax.swing.JTextField();
+        txtFotoMesa = new javax.swing.JTextField();
         btnModificarTipoMesa = new javax.swing.JButton();
         lblDescripcion = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtCapacidad = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtTipoMesa1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tipos de Mesas");
@@ -123,6 +127,12 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
             }
         });
 
+        txtFotoMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFotoMesaActionPerformed(evt);
+            }
+        });
+
         btnModificarTipoMesa.setText("Modificar Tipo Mesa");
         btnModificarTipoMesa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,49 +150,63 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Foto");
+
+        txtTipoMesa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTipoMesa1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnEliminarTipoMesa)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnModificarTipoMesa)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
-                            .addComponent(btnAtras))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(293, 293, 293)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(lblDescripcion))
-                        .addGap(18, 18, 18)
+                        .addGap(0, 40, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnEliminarTipoMesa)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnModificarTipoMesa)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAtras))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDescripcion)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                                .addComponent(btnAgregar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(txtTipoMesa1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFotoMesa))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAgregar)))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDescripcion)
-                    .addComponent(txtTipoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTipoMesa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2)
+                    .addComponent(txtFotoMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -220,14 +244,16 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String descripcion;
         String capacidad;
+        String foto;
         int capentero;
         int existe;
-        descripcion = txtTipoMesa.getText();
+        descripcion = txtTipoMesa1.getText();
         capacidad = txtCapacidad.getText();
+        foto = txtFotoMesa.getText();
         existe = existeTipoMesa(descripcion);
 
         
-        if ((descripcion.equals("")|| capacidad.equals(""))){
+        if ((descripcion.equals("")|| capacidad.equals("") || foto.equals(""))){
             JOptionPane.showMessageDialog(this, "Debe completar todos los campos","Precaución", JOptionPane.WARNING_MESSAGE);
         }
         else{
@@ -236,13 +262,15 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
                 if (existe == 0){
                     try {
                         capentero =Integer.parseInt(capacidad);
-                        CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?,?)}");
+                        CallableStatement insert = cc.prepareCall("{call insertarTipoMesa(?,?,?)}");
                         insert.setString(1, descripcion);
                         insert.setInt(2, capentero);
+                        insert.setString(3, foto);
                         insert.execute();
                         JOptionPane.showMessageDialog(this,"¡Tipo de mesa agregada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-                        txtTipoMesa.setText("");
+                        txtTipoMesa1.setText("");
                         txtCapacidad.setText("");
+                        txtFotoMesa.setText("");
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
                             "Mensajes", JOptionPane.ERROR_MESSAGE);
@@ -283,6 +311,7 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
     private void btnModificarTipoMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarTipoMesaActionPerformed
         String descripcion;
         String capacidad;
+        String foto;
         int capentero;
         int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea modificar este Tipo de Mesa?","Mensajes", JOptionPane.ERROR_MESSAGE);
         if (i == 0){
@@ -290,12 +319,14 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
             String valor = tblTipoMesa.getValueAt(fila, 0).toString();
             descripcion = tblTipoMesa.getValueAt(fila, 1).toString();
             capacidad = tblTipoMesa.getValueAt(fila, 2).toString();
+            foto = tblTipoMesa.getValueAt(fila, 3).toString();
             try {
                 capentero = Integer.parseInt(capacidad);
-                CallableStatement modificar = cc.prepareCall("{call actualizarTipoMesa(?,?,?)}");
+                CallableStatement modificar = cc.prepareCall("{call actualizarTipoMesa(?,?,?,?)}");
                 modificar.setString(1, valor);
                 modificar.setString(2, descripcion);
                 modificar.setInt(3, capentero);
+                modificar.setString(4, foto);
                 modificar.execute();
                 JOptionPane.showMessageDialog(this,"¡Tipo de mesa modificada exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
@@ -321,6 +352,14 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
             }    
     }//GEN-LAST:event_txtCapacidadKeyTyped
 
+    private void txtFotoMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFotoMesaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFotoMesaActionPerformed
+
+    private void txtTipoMesa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoMesa1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTipoMesa1ActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -329,10 +368,12 @@ public class Vista_TipoMesa extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarTipoMesa;
     private javax.swing.JButton btnModificarTipoMesa;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JTable tblTipoMesa;
     private javax.swing.JTextField txtCapacidad;
-    private javax.swing.JTextField txtTipoMesa;
+    private javax.swing.JTextField txtFotoMesa;
+    private javax.swing.JTextField txtTipoMesa1;
     // End of variables declaration//GEN-END:variables
 }

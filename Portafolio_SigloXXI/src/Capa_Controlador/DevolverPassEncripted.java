@@ -25,7 +25,7 @@ public class DevolverPassEncripted {
     private static final Conexion CONEXION = Conexion.obtenerEstadoConexion();
     public Usuario GetUsuario(Object key) {
         Usuario u = null;
-        String sql = "SELECT * FROM usuario WHERE correo = ?";
+        String sql = "SELECT * FROM usuario WHERE user_name = ?";
          try {
 
             ps = CONEXION.getConexion().prepareStatement(sql);
@@ -33,7 +33,7 @@ public class DevolverPassEncripted {
             rs = ps.executeQuery();
             if(rs.next())
             {
-                u = new Usuario(rs.getInt(1) ,rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6));
+                u = new Usuario(rs.getInt(1) ,rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
             }
         } catch (SQLException e) {
             return null;
@@ -42,7 +42,7 @@ public class DevolverPassEncripted {
         {
             CONEXION.cerrarConexion();
         }
-        //System.out.println(mUsuario);
+        System.out.println(u);
         return u;
     }   
 }
