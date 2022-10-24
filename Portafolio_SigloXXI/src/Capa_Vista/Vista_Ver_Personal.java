@@ -187,7 +187,7 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
         PreparedStatement ps = null;
         ResultSet rs = null;
         String sql = "";
-        sql = "select id_tipo_usuario from tipo_usuario where descripcion = ?;";
+        sql = "select r.id from user_role ur inner join usuario u on (ur.user_id = u.id) inner join rol r on (ur.role_id = r.id) where r.role_name = ?;";
         int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea modificar este Usuario?","Mensajes", JOptionPane.ERROR_MESSAGE);
         if (i == 0){
             int fila = tblPersonal.getSelectedRow();
@@ -201,14 +201,13 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
                 ps.setString(1, area);
                 rs = ps.executeQuery();
                if (rs.next()){
-                    idtipo = Integer.parseInt(rs.getString("id_tipo_usuario"));
+                    idtipo = Integer.parseInt(rs.getString("r.id"));
                 }
-                CallableStatement modificar = cc.prepareCall("{call actualizarUsuario(?,?,?,?,?)}");
+                CallableStatement modificar = cc.prepareCall("{call actualizarUsuario(?,?,?,?)}");
                 modificar.setString(1, id);
                 modificar.setString(2, nombre);
                 modificar.setString(3, apellido);
                 modificar.setString(4, correo);
-                modificar.setInt(5, idtipo);
                 modificar.execute();
                 JOptionPane.showMessageDialog(this,"¡Usuario modificado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
