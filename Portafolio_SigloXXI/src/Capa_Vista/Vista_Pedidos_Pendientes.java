@@ -187,7 +187,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 
-             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), 2));
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), 3));
                 
             }
             
@@ -216,7 +216,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEnviarPedidoActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        
+        mostrarTabla();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void txtFiltro1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltro1KeyTyped
@@ -225,7 +225,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 
-             trs.setRowFilter(RowFilter.regexFilter(txtFiltro1.getText(), 3));
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro1.getText(), 2));
                 
             }
             
