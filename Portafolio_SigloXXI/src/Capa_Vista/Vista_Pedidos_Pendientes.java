@@ -188,7 +188,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 
-             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), 3));
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(),2));
                 
             }
             
@@ -226,7 +226,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 
-             trs.setRowFilter(RowFilter.regexFilter(txtFiltro1.getText(), 2));
+             trs.setRowFilter(RowFilter.regexFilter(txtFiltro1.getText(), 3));
                 
             }
             

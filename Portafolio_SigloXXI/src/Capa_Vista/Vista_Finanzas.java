@@ -5,15 +5,30 @@
  */
 package Capa_Vista;
 
+import Capa_Conexion.Conexion;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.HeadlessException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tomas
  */
 public class Vista_Finanzas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Vista_Finanzas
-     */
+    Conexion cc = new Conexion();
+    Connection cn = cc.conexion;
     public Vista_Finanzas() {
         initComponents();
         this.setTitle("Menu Finanzas");
@@ -31,6 +46,8 @@ public class Vista_Finanzas extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnEmitirBoleta = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txt1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,30 +67,41 @@ public class Vista_Finanzas extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("aaaa");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnSalir)
+                .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(123, 123, 123)
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(btnEmitirBoleta)))
                 .addContainerGap(157, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnSalir)
-                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel2)
-                .addGap(74, 74, 74)
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addComponent(btnEmitirBoleta, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
                 .addComponent(btnSalir)
@@ -88,11 +116,49 @@ public class Vista_Finanzas extends javax.swing.JFrame {
         this.dispose();
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
-
+    public static String fechaActual(){
+       Date fecha = new Date();
+        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
+        return formatofecha.format(fecha);
+    };
     private void btnEmitirBoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmitirBoletaActionPerformed
-        Vista_Emision_Boleta visEmiBol = new Vista_Emision_Boleta();
-        visEmiBol.setVisible(true);
-        this.dispose();
+        Document boleta = new Document();
+        
+        try {
+            String path = System.getProperty("user.home");
+            PdfWriter.getInstance(boleta, new FileOutputStream(path + "/Desktop/boleta.pdf"));
+            boleta.open();
+            
+            PdfPTable tabla = new PdfPTable(5);
+            tabla.addCell(fechaActual());
+            tabla.addCell("Cantidad");
+            tabla.addCell("Monto neto");
+            tabla.addCell("IVA");
+            tabla.addCell("Monto Total");
+            
+            try {
+                PreparedStatement ps= cn.prepareStatement("select pe.amount, r.descripcion, p.price, p.price from pedido pe inner join plato p on (p.id = pe.product_id) inner join receta r on (p.id = r.id_platos) limit 1;");
+                
+                ResultSet rs = ps.executeQuery();
+                
+                if(rs.next()){
+                    
+                    do {                        
+                        tabla.addCell(rs.getString(1));
+                        tabla.addCell(rs.getString(2));
+                        tabla.addCell(rs.getString(3));
+                        tabla.addCell(rs.getString(4));
+                    } while (rs.next());
+                    boleta.add(tabla);
+                }
+            } catch (DocumentException | SQLException e) {
+                
+            }
+            boleta.close();
+            JOptionPane.showMessageDialog(this, "Reporte Creado","Anuncio",JOptionPane.INFORMATION_MESSAGE);
+        } catch (DocumentException | HeadlessException | FileNotFoundException e) {
+            
+        }
     }//GEN-LAST:event_btnEmitirBoletaActionPerformed
 
  
@@ -100,6 +166,8 @@ public class Vista_Finanzas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEmitirBoleta;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextField txt1;
     // End of variables declaration//GEN-END:variables
 }

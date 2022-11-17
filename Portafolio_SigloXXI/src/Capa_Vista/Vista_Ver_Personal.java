@@ -164,8 +164,8 @@ public class Vista_Ver_Personal extends javax.swing.JFrame {
                 delete.execute();
                 JOptionPane.showMessageDialog(this,"¡Usuario eliminado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
-                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                  //  "Mensajes", JOptionPane.ERROR_MESSAGE);
             }
         }
         mostrarTabla(); 
