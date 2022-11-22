@@ -149,7 +149,7 @@ public class Vista_Emitir_Boleta extends javax.swing.JFrame {
     };
     private void btnEmitirBoletaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmitirBoletaActionPerformed
         Document boleta = new Document();
-        String path = "boleta.pdf";
+        String path = "C:\\Users\\tomas\\Desktop\\boleta.pdf";
         try {
             double Total_IVA = 0;
             int total = 0; 
@@ -184,6 +184,8 @@ public class Vista_Emitir_Boleta extends javax.swing.JFrame {
             
             
             boleta.close();
+            JOptionPane.showMessageDialog(this,"¡Documento generado con éxito!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"La ruta de su archivo es \n" + path,"Aviso",JOptionPane.INFORMATION_MESSAGE);
         }  catch (DocumentException | FileNotFoundException | SQLException ex) {
             Logger.getLogger(Vista_Emitir_Boleta.class.getName()).log(Level.SEVERE, null, ex);
         }

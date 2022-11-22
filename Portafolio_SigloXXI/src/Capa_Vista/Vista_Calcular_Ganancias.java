@@ -7,13 +7,17 @@ package Capa_Vista;
 
 import Capa_Conexion.Conexion;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,25 +41,25 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCalcular = new javax.swing.JButton();
+        btnAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("CALCULADOR DE GANANCIAS");
 
-        jButton1.setText("Calcular");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCalcular.setText("Calcular");
+        btnCalcular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCalcularActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Atras");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAtras.setText("Atras");
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAtrasActionPerformed(evt);
             }
         });
 
@@ -65,7 +69,7 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(324, 324, 324)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(132, Short.MAX_VALUE)
@@ -74,7 +78,7 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(125, 125, 125))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnAtras)
                         .addGap(18, 18, 18))))
         );
         layout.setVerticalGroup(
@@ -83,20 +87,21 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnAtras)
                 .addGap(16, 16, 16))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
         Document doc_ganancia = new Document();
         PdfPTable tabla_ganancias = new PdfPTable(3);
         Vista_Emitir_Boleta vis = new Vista_Emitir_Boleta();
-        String path = "ganancias.pdf";
+        String path = "C:\\Users\\tomas\\Desktop\\ganancias.pdf";
         try {
             int descuento = 0;
             PdfWriter.getInstance(doc_ganancia, new FileOutputStream(path));
@@ -118,37 +123,34 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
             }
             ps = cn.prepareStatement(sql1);
             rs = ps.executeQuery();
-            while(rs.next()){
-                descuento += descuento + rs.getInt("sum(cde.total)");
-            }
             Phrase nombre_REST = new Phrase("RESTAURANT SIGLO XXI\n\n\n");
             Phrase fecha = new Phrase("Con fecha: " + vis.fechaActual() + "\n\n");
-            Phrase descuentos = new Phrase("Total gastado en compra de insumos: " + sql1);
             doc_ganancia.add(nombre_REST);
             doc_ganancia.add(fecha); 
             doc_ganancia.add(tabla_ganancias);
-            doc_ganancia.add(descuentos);
-            
-            
-            
-            
+            while(rs.next()){
+                Phrase descuentos = new Phrase("Total gastado en compra de insumos: " + rs.getString("sum(cde.total)"));
+                doc_ganancia.add(descuentos);
+            }
             doc_ganancia.close();
-        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,"¡Documento generado con éxito!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"La ruta de su archivo es \n" + path,"Aviso",JOptionPane.INFORMATION_MESSAGE);
+        } catch (DocumentException | FileNotFoundException | SQLException e) {
         }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCalcularActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         Vista_Finanzas visFi = new Vista_Finanzas();
         visFi.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnAtrasActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnCalcular;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
