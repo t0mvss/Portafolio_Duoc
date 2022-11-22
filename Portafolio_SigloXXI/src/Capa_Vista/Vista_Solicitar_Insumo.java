@@ -54,6 +54,7 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,6 +120,13 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
             }
         });
 
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,11 +146,12 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                                     .addComponent(jLabel2)))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
                                 .addComponent(btnRealizarSoli, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(70, 70, 70)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEliminar)))
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -178,7 +187,8 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRealizarSoli)
                     .addComponent(btnAtras)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnEliminar))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -218,14 +228,15 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID SOLICITUD");
         modelo.addColumn("ID DETALLE");
+        modelo.addColumn("ID INSUMO");
         modelo.addColumn("NOMBRE");
         modelo.addColumn("CANTIDAD");
         modelo.addColumn("MEDIDA");
         modelo.addColumn("ESTADO");
         tblSolicitud.setModel(modelo);
         String sql = "";
-        sql = "select de.id_solicitud_insumo, de.id_detalle, i.nombre, de.cantidad, tp.descripcion, si.estado from solicitud_insumo si inner join detalle_solicitud de on si.id_solicitud_insumo = de.id_solicitud_insumo inner join insumos i on i.id_insumos = de.id_insumo inner join tipo_medida tp on tp.id_tipo_medida = i.id_tipo_medida where si.estado = 'En proceso' order by i.id_insumos asc;";
-        String [] dato = new String[6];
+        sql = "select de.id_solicitud_insumo, de.id_detalle, i.id_insumos, i.nombre, de.cantidad, tp.descripcion, si.estado from solicitud_insumo si inner join detalle_solicitud de on si.id_solicitud_insumo = de.id_solicitud_insumo inner join insumos i on i.id_insumos = de.id_insumo inner join tipo_medida tp on tp.id_tipo_medida = i.id_tipo_medida where si.estado = 'En proceso' order by i.id_insumos asc;";
+        String [] dato = new String[7];
         try{
             Statement st = cc.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -236,6 +247,7 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
                 dato[3] = rs.getString(4);
                 dato[4] = rs.getString(5);
                 dato[5] = rs.getString(6);
+                dato[6] = rs.getString(7);
                 modelo.addRow(dato);
             }
             tblSolicitud.setModel(modelo);
@@ -284,12 +296,10 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String cantidad;
         int capentero;
-        int existe;
         cantidad = txtCantidad.getText();
         int fila = tblInsumos.getSelectedRow();
         String valor = tblInsumos.getValueAt(fila, 0).toString();
         int id_insumo = Integer.parseInt(valor);
-        //existe = existeInsumo(id_insumo);
 
         if ((cantidad.equals(""))){
             JOptionPane.showMessageDialog(this, "Debe ingresar una cantidad","Precaución", JOptionPane.WARNING_MESSAGE);
@@ -297,34 +307,20 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         else{
             int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea agregar este Insumo a la solicitud?","Mensajes", JOptionPane.ERROR_MESSAGE);
             if (i == 0){
-                //if (existe == 0){
-                    try {
-                        capentero =Integer.parseInt(cantidad);
-                        CallableStatement insert = cc.prepareCall("{call insertarInsumoSolicitud(?,?)}");
-                        insert.setString(1, valor);
-                        insert.setInt(2, capentero);
-                        insert.execute();
-                        JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-                        txtCantidad.setText("");
-                    }catch (Exception e) {
-                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
-                            "Mensajes", JOptionPane.ERROR_MESSAGE);
-                    }
+                try {
+                    capentero =Integer.parseInt(cantidad);
+                    CallableStatement insert = cc.prepareCall("{call insertarInsumoSolicitud(?,?)}");
+                    insert.setString(1, valor);
+                    insert.setInt(2, capentero);
+                    insert.execute();
+                    JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                    txtCantidad.setText("");
+                }catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                        "Mensajes", JOptionPane.ERROR_MESSAGE);
                 }
-               /* else{
-                    try {
-                        capentero =Integer.parseInt(cantidad);
-                        CallableStatement insert = cc.prepareCall("{call insertarInsumoSolicitud(?,?)}");
-                        insert.setString(1, valor);
-                        insert.setInt(2, capentero);
-                        insert.execute();
-                        JOptionPane.showMessageDialog(this,"¡Insumo agregado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
-                        txtCantidad.setText("");
-                    }catch (Exception e) {
-                        JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
-                            "Mensajes", JOptionPane.ERROR_MESSAGE);
-                    }*/
-                }
+            }
+            }
         mostrarTablaSolicitud();
         mostrarTabla();                                  
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -350,12 +346,32 @@ public class Vista_Solicitar_Insumo extends javax.swing.JFrame {
         mostrarTablaSolicitud();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int fila = tblSolicitud.getSelectedRow();
+        String valor = tblSolicitud.getValueAt(fila, 2).toString();
+        int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea eliminar este Insumo de la solicitud?","Mensajes", JOptionPane.ERROR_MESSAGE);
+            if (i == 0){
+                try {
+                    CallableStatement eliminar = cc.prepareCall("{call eliminarInsumoDeSolicitud(?)}");
+                    eliminar.setString(1, valor);
+                    eliminar.execute();
+                    JOptionPane.showMessageDialog(this,"¡Insumo eliminado exitosamente!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                    txtCantidad.setText("");
+                }catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                        "Mensajes", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        mostrarTablaSolicitud();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnRealizarSoli;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

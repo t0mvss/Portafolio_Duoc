@@ -141,7 +141,7 @@ public class Vista_Login extends javax.swing.JFrame {
                 mUsuario = dev.GetUsuario(t);
                 
                 String encript = CR.ecnode(txtpass.getText());
-                if (Pasword.equals(mUsuario.getPass()) && t.contains("admin")) {
+                if (Pasword.equals(mUsuario.getPass()) && t.contains("adm")) {
                     JOptionPane.showMessageDialog(null, "Bienvenido al sistema");
                     Vista_Admin visMen = new Vista_Admin();
                     visMen.setVisible(true);

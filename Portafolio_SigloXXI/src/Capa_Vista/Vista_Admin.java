@@ -77,6 +77,11 @@ public class Vista_Admin extends javax.swing.JFrame {
         });
 
         btnComprar.setText("Comprar Insumos");
+        btnComprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComprarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,6 +160,12 @@ public class Vista_Admin extends javax.swing.JFrame {
         visSoli.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSolicitudesActionPerformed
+
+    private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
+        Vista_Comprar_Insumos visComprar = new Vista_Comprar_Insumos();
+        visComprar.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnComprarActionPerformed
 
     /**
      * @param args the command line arguments
