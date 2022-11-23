@@ -11,10 +11,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class Reportes {
 
@@ -33,7 +29,7 @@ public class Reportes {
     }
 
 //METODO PARA EXPORTAR A PDF UN REPORTE   
-
+/*
     public void resportesPDF(String ruta, String archi) {
         try {
             String rutaInforme = ruta;
@@ -48,5 +44,5 @@ public class Reportes {
         }
     }
 
-   
+   */
 }
