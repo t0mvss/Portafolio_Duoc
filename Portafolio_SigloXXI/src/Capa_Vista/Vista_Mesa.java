@@ -238,7 +238,7 @@ public class Vista_Mesa extends javax.swing.JFrame {
                 ps = cc.prepareStatement(sql);
                 ps.setString(1, tipomesa);
                 rs = ps.executeQuery();
-               if (rs.next()){
+                if (rs.next()){
                     idtipomesa = Integer.parseInt(rs.getString("id_tipo_mesa"));
                 }
                 CallableStatement insert = cc.prepareCall("{call insertarMesa(?,?)}"); 

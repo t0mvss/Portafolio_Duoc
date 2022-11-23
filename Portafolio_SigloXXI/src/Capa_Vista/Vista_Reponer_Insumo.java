@@ -5,10 +5,15 @@
 package Capa_Vista;
 
 import Capa_Conexion.Conexion;
+import static Capa_Vista.Vista_Comprar_Insumos.transfer_to_email;
+import java.awt.HeadlessException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,7 +31,8 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
     
     public Vista_Reponer_Insumo() {
         initComponents();
-        mostrarTabla();
+        mostrarTablaInsumos();
+        mostrarTablaCompras();
         setTitle("Reponer Insumos");
     }
 
@@ -87,6 +93,11 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
         jLabel3.setText("Insumos");
 
         btnModif.setText("Modificar Stock");
+        btnModif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifActionPerformed(evt);
+            }
+        });
 
         btnAtras.setText("Atrás");
         btnAtras.addActionListener(new java.awt.event.ActionListener() {
@@ -110,13 +121,13 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
                             .addComponent(jScrollPane1))
-                        .addGap(50, 50, 50)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnModif, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,22 +139,26 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
+                        .addGap(86, 86, 86)
                         .addComponent(btnModif, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(btnAtras)
-                .addGap(30, 30, 30))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(27, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(77, 77, 77))))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void mostrarTabla(){
+    public void mostrarTablaInsumos(){
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
         modelo.addColumn("NOMBRE");
@@ -169,11 +184,86 @@ public class Vista_Reponer_Insumo extends javax.swing.JFrame {
 
     }
 
+    public void mostrarTablaCompras(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("FECHA");
+        modelo.addColumn("PRODUCTO");
+        modelo.addColumn("CANTIDAD");
+        modelo.addColumn("ESTADO DE REPOSICIÓN");
+        tblAdmin.setModel(modelo);
+
+        String sql = "";
+        sql = "select ci.id_compra_insumos, ci.fecha, pp.descripcion, cde.cantidad, cde.estado_reposicion from comprar_insumos ci inner join compra_detalle cde on cde.id_comprar_insumos = ci.id_compra_insumos inner join producto_proveedor pp on pp.id_producto = cde.id_producto where ci.estado = 'Realizada' order by ci.fecha desc;";
+        String [] dato = new String[5];
+        try{
+            Statement st = cc.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                dato[0] = rs.getString(1);
+                dato[1] = rs.getString(2);
+                dato[2] = rs.getString(3);
+                dato[3] = rs.getString(4);
+                dato[4] = rs.getString(5);
+                modelo.addRow(dato);
+            }
+            tblAdmin.setModel(modelo);
+        }
+        catch(SQLException e){
+        }
+
+    }
+
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         Vista_Bodega visBod = new Vista_Bodega();
         visBod.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void btnModifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifActionPerformed
+        int fila = tblAdmin.getSelectedRow();
+        String insumo = tblAdmin.getValueAt(fila, 2).toString();
+        String cantidad = tblAdmin.getValueAt(fila, 3).toString();
+        int id_compra = Integer.parseInt(tblAdmin.getValueAt(fila, 0).toString());
+        System.out.println(id_compra);
+        int cant = Integer.parseInt(cantidad);
+        int id_ins = 0;
+        int id_pp = 0;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "";
+        int i = JOptionPane.showConfirmDialog(this,"¿Está seguro de que desea reponer este Insumo?","Mensajes", JOptionPane.ERROR_MESSAGE);
+        if (i == 0){
+            try {
+                sql = "select id_insumos from insumos where nombre = ?; ";
+                ps = cc.prepareStatement(sql);
+                ps.setString(1, insumo);
+                rs = ps.executeQuery();
+                if (rs.next()){
+                    id_ins = Integer.parseInt(rs.getString("id_insumos"));
+                }
+                sql = "select pp.id_producto from producto_proveedor pp inner join compra_detalle cd on cd.id_producto = pp.id_producto where pp.descripcion = ?; ";
+                ps = cc.prepareStatement(sql);
+                ps.setString(1, insumo);
+                rs = ps.executeQuery();
+                if (rs.next()){
+                    id_pp = Integer.parseInt(rs.getString("pp.id_producto"));
+                }
+                CallableStatement modificar = cc.prepareCall("{call actualizarStock(?,?,?,?)}");
+                modificar.setInt(1, id_compra);
+                modificar.setInt(2, cant);
+                modificar.setInt(3, id_ins);
+                modificar.setInt(4, id_pp);
+                modificar.execute();
+                JOptionPane.showMessageDialog(this,"¡Se ha actualizado el stock del insumo!","Mensajes", JOptionPane.INFORMATION_MESSAGE);
+            } catch (HeadlessException | NumberFormatException | SQLException e) {
+                JOptionPane.showMessageDialog(this, "Problemas de conexión con la Base de Datos",
+                    "Mensajes", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    mostrarTablaInsumos();
+    mostrarTablaCompras();
+    }//GEN-LAST:event_btnModifActionPerformed
 
     
 
