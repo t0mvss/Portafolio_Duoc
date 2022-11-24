@@ -161,7 +161,7 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
 
     private void btnGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGastosActionPerformed
         Document doc_gastos = new Document();
-        PdfPTable tabla_gastos = new PdfPTable(3);
+        PdfPTable tabla_gastos = new PdfPTable(4);
         Vista_Emitir_Boleta vis = new Vista_Emitir_Boleta();
         String path = "C:\\Users\\tomas\\Desktop\\gastos.pdf";
         try {
@@ -170,7 +170,7 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
             doc_gastos.open();
             PreparedStatement ps = null;
             ResultSet rs = null;
-            String sql = "SELECT ci.id_compra_insumos, ci.fecha, p.nombre_proveedor, sum(cde.total) from comprar_insumos ci inner join proveedor p on ci.id_proveedor = p.id_proveedorinner join compra_detalle cde on cde.id_comprar_insumos = ci.id_compra_insumos group by ci.id_compra_insumos;";
+            String sql = "SELECT ci.id_compra_insumos, ci.fecha, p.nombre_proveedor, sum(cde.total) from comprar_insumos ci inner join proveedor p on ci.id_proveedor = p.id_proveedor inner join compra_detalle cde on cde.id_comprar_insumos = ci.id_compra_insumos group by ci.id_compra_insumos;";
             ps = cn.prepareStatement(sql);
             rs = ps.executeQuery();
             tabla_gastos.addCell("ID");
@@ -183,7 +183,7 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
                 tabla_gastos.addCell(rs.getString(3));
                 tabla_gastos.addCell(rs.getString(4));
             }
-            String sql1 = "select sum(cde.total) from compra_detalle cde inner join comprar_insumos ci on ci.id_compra_insumos = cde.id_comprar_insumos GROUP BY cde.id_comprar_insumos;";
+            String sql1 = "select sum(cde.total) from compra_detalle cde inner join comprar_insumos ci on ci.id_compra_insumos = cde.id_comprar_insumos;";
             ps = cn.prepareStatement(sql1);
             rs = ps.executeQuery();
             if(rs.next()){
