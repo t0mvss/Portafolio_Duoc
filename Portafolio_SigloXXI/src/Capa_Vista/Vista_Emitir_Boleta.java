@@ -162,7 +162,7 @@ public class Vista_Emitir_Boleta extends javax.swing.JFrame {
             boleta.open();
             PreparedStatement ps = null;
             ResultSet rs = null;
-            String sql = "select p.name ,dv.amount from detalle_venta dv inner join plato p on (dv.product_id = p.id) where sale_id = ?;";
+            String sql = "select p.name ,dv.amount, p.price from detalle_venta dv inner join plato p on (dv.product_id = p.id) where sale_id = ?;";
             ps = cn.prepareStatement(sql);
             ps.setString(1, valor);
             rs = ps.executeQuery();
@@ -173,7 +173,7 @@ public class Vista_Emitir_Boleta extends javax.swing.JFrame {
             boleta.add(fecha); 
             
             while(rs.next()){
-                Phrase producto = new Phrase(rs.getString("p.name") + " x " + rs.getString("dv.amount") + "\n");
+                Phrase producto = new Phrase(rs.getString("p.name") + " x " + rs.getString("dv.amount") + " " + rs.getString("p.price") + "\n");
                 boleta.add(producto);
             }
             Phrase monto_neto = new Phrase("\nMonto Neto: " + (total - Total_IVA));

@@ -47,7 +47,7 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         
 
         String sql = "";
-        sql = "SELECT p.name ,pe.amount, pe.client_id, pe.estado_pedido FROM pedido pe INNER JOIN plato p ON (pe.product_id = p.id);";
+        sql = "SELECT p.name ,pe.amount, pe.client_id, pe.estado_pedido FROM pedido pe INNER JOIN plato p ON (pe.product_id = p.id) where pe.estado_pedido = 'Solicitado' order by p.category asc";
         String [] dato = new String[4];
         try{
             Statement st = cc.createStatement();

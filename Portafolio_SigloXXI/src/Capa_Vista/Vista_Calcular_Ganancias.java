@@ -43,13 +43,14 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnCalcular = new javax.swing.JButton();
         btnAtras = new javax.swing.JButton();
+        btnGastos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setText("CALCULADOR DE GANANCIAS");
+        jLabel1.setText("REPORTES");
 
-        btnCalcular.setText("Calcular");
+        btnCalcular.setText("Ganancias");
         btnCalcular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCalcularActionPerformed(evt);
@@ -63,32 +64,43 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
             }
         });
 
+        btnGastos.setText("Gastos");
+        btnGastos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGastosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(324, 324, 324)
-                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(132, Short.MAX_VALUE)
+                .addContainerGap(677, Short.MAX_VALUE)
+                .addComponent(btnAtras)
+                .addGap(18, 18, 18))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(125, 125, 125))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnAtras)
-                        .addGap(18, 18, 18))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(285, 285, 285)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(190, 190, 190)
+                        .addComponent(btnGastos, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
-                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnGastos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCalcular, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
                 .addComponent(btnAtras)
                 .addGap(16, 16, 16))
         );
@@ -103,35 +115,36 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
         Vista_Emitir_Boleta vis = new Vista_Emitir_Boleta();
         String path = "C:\\Users\\tomas\\Desktop\\ganancias.pdf";
         try {
-            int descuento = 0;
+            String descuento = "";
             PdfWriter.getInstance(doc_ganancia, new FileOutputStream(path));
             doc_ganancia.open();
             PreparedStatement ps = null;
             ResultSet rs = null;
             String sql = "select * from venta v;";
-            String sql1 = "select sum(cde.total) from compra_detalle cde inner join comprar_insumos ci on ci.id_compra_insumos = cde.id_comprar_insumos GROUP BY cde.id_comprar_insumos;";
             //descuento = Integer.parseInt(sql1);
             ps = cn.prepareStatement(sql);
             rs = ps.executeQuery();
             tabla_ganancias.addCell("ID");
-            tabla_ganancias.addCell("FECHA COMPRA");
-            tabla_ganancias.addCell("TOTAL COMPRA");
+            tabla_ganancias.addCell("FECHA VENTA");
+            tabla_ganancias.addCell("TOTAL VENTA");
             while(rs.next()){
                 tabla_ganancias.addCell(rs.getString(1));
                 tabla_ganancias.addCell(rs.getString(2));
                 tabla_ganancias.addCell(rs.getString(3));
             }
+            String sql1 = "select sum(total) from venta v;";
             ps = cn.prepareStatement(sql1);
             rs = ps.executeQuery();
+            if(rs.next()){
+               descuento = rs.getString("sum(total)"); 
+            }
             Phrase nombre_REST = new Phrase("RESTAURANT SIGLO XXI\n\n\n");
             Phrase fecha = new Phrase("Con fecha: " + vis.fechaActual() + "\n\n");
+            Phrase descuentos = new Phrase("Total de ventas: " + descuento);
             doc_ganancia.add(nombre_REST);
             doc_ganancia.add(fecha); 
             doc_ganancia.add(tabla_ganancias);
-            while(rs.next()){
-                Phrase descuentos = new Phrase("Total gastado en compra de insumos: " + rs.getString("sum(cde.total)"));
-                doc_ganancia.add(descuentos);
-            }
+            doc_ganancia.add(descuentos);
             doc_ganancia.close();
             JOptionPane.showMessageDialog(this,"¡Documento generado con éxito!","Aviso",JOptionPane.INFORMATION_MESSAGE);
             JOptionPane.showMessageDialog(this,"La ruta de su archivo es \n" + path,"Aviso",JOptionPane.INFORMATION_MESSAGE);
@@ -146,11 +159,56 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
 
+    private void btnGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGastosActionPerformed
+        Document doc_gastos = new Document();
+        PdfPTable tabla_gastos = new PdfPTable(3);
+        Vista_Emitir_Boleta vis = new Vista_Emitir_Boleta();
+        String path = "C:\\Users\\tomas\\Desktop\\gastos.pdf";
+        try {
+            String descuento = "";
+            PdfWriter.getInstance(doc_gastos, new FileOutputStream(path));
+            doc_gastos.open();
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            String sql = "SELECT ci.id_compra_insumos, ci.fecha, p.nombre_proveedor, sum(cde.total) from comprar_insumos ci inner join proveedor p on ci.id_proveedor = p.id_proveedorinner join compra_detalle cde on cde.id_comprar_insumos = ci.id_compra_insumos group by ci.id_compra_insumos;";
+            ps = cn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            tabla_gastos.addCell("ID");
+            tabla_gastos.addCell("FECHA COMPRA");
+            tabla_gastos.addCell("NOMBRE PROVEEDOR");
+            tabla_gastos.addCell("TOTAL COMPRA");
+            while(rs.next()){
+                tabla_gastos.addCell(rs.getString(1));
+                tabla_gastos.addCell(rs.getString(2));
+                tabla_gastos.addCell(rs.getString(3));
+                tabla_gastos.addCell(rs.getString(4));
+            }
+            String sql1 = "select sum(cde.total) from compra_detalle cde inner join comprar_insumos ci on ci.id_compra_insumos = cde.id_comprar_insumos GROUP BY cde.id_comprar_insumos;";
+            ps = cn.prepareStatement(sql1);
+            rs = ps.executeQuery();
+            if(rs.next()){
+               descuento = rs.getString("sum(cde.total)"); 
+            }
+            Phrase nombre_REST = new Phrase("RESTAURANT SIGLO XXI\n\n\n");
+            Phrase fecha = new Phrase("Con fecha: " + vis.fechaActual() + "\n\n");
+            Phrase descuentos = new Phrase("Total de compras: " + descuento);
+            doc_gastos.add(nombre_REST);
+            doc_gastos.add(fecha); 
+            doc_gastos.add(tabla_gastos);
+            doc_gastos.add(descuentos);
+            doc_gastos.close();
+            JOptionPane.showMessageDialog(this,"¡Documento generado con éxito!","Aviso",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"La ruta de su archivo es \n" + path,"Aviso",JOptionPane.INFORMATION_MESSAGE);
+        } catch (DocumentException | FileNotFoundException | SQLException e) {
+        }
+    }//GEN-LAST:event_btnGastosActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnCalcular;
+    private javax.swing.JButton btnGastos;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
