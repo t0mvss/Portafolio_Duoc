@@ -50,6 +50,7 @@ public class Vista_Crear_Receta extends javax.swing.JFrame {
         btnAnadirIngredientes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Crear Receta");
 
         jScrollPane1.setViewportView(txtNombreReceta);
 

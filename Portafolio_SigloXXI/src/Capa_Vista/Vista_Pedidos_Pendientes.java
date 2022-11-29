@@ -33,8 +33,6 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
     public Vista_Pedidos_Pendientes() {
         initComponents();
         mostrarTabla();
-        TextPrompt placeholder = new TextPrompt("ESTADO", txtFiltro1);
-        TextPrompt placeholder1 = new TextPrompt("ID USUARIO", txtFiltro);
     }
 
     public void mostrarTabla(){
@@ -74,17 +72,14 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPedidos = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
-        txtFiltro = new javax.swing.JTextField();
         btnEnviarPedido = new javax.swing.JButton();
-        btnRefresh = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtFiltro1 = new javax.swing.JTextPane();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pedidos Pendientes");
 
         tblPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -106,32 +101,12 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             }
         });
 
-        txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFiltroKeyTyped(evt);
-            }
-        });
-
         btnEnviarPedido.setText("Enviar Pedido");
         btnEnviarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEnviarPedidoActionPerformed(evt);
             }
         });
-
-        btnRefresh.setText("Refrescar");
-        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
-
-        txtFiltro1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFiltro1KeyTyped(evt);
-            }
-        });
-        jScrollPane2.setViewportView(txtFiltro1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,35 +115,23 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(btnEnviarPedido)
-                .addGap(18, 18, 18)
-                .addComponent(btnRefresh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAtras)
                 .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(144, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAtras)
-                    .addComponent(btnEnviarPedido)
-                    .addComponent(btnRefresh))
+                    .addComponent(btnEnviarPedido))
                 .addGap(23, 23, 23))
         );
 
@@ -181,21 +144,6 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         visCo.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasActionPerformed
-
-    private void txtFiltroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyTyped
-        
-        txtFiltro.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                
-             trs.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(),2));
-                
-            }
-            
-        });
-        trs = new TableRowSorter(modelo);
-        tblPedidos.setRowSorter(trs);
-    }//GEN-LAST:event_txtFiltroKeyTyped
 
     private void btnEnviarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarPedidoActionPerformed
         int fila = tblPedidos.getSelectedRow();
@@ -216,35 +164,12 @@ public class Vista_Pedidos_Pendientes extends javax.swing.JFrame {
         mostrarTabla();
     }//GEN-LAST:event_btnEnviarPedidoActionPerformed
 
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        mostrarTabla();
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
-    private void txtFiltro1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltro1KeyTyped
-       
-        txtFiltro1.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                
-             trs.setRowFilter(RowFilter.regexFilter(txtFiltro1.getText(), 3));
-                
-            }
-            
-        });
-        trs = new TableRowSorter(modelo);
-        tblPedidos.setRowSorter(trs);
-    }//GEN-LAST:event_txtFiltro1KeyTyped
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnEnviarPedido;
-    private javax.swing.JButton btnRefresh;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTable tblPedidos;
-    private javax.swing.JTextField txtFiltro;
-    private javax.swing.JTextPane txtFiltro1;
     // End of variables declaration//GEN-END:variables
 }

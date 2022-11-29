@@ -46,6 +46,7 @@ public class Vista_Calcular_Ganancias extends javax.swing.JFrame {
         btnGastos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Calcular Ganancias");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("REPORTES");

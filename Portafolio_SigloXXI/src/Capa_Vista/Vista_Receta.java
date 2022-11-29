@@ -61,6 +61,7 @@ public class Vista_Receta extends javax.swing.JFrame {
         btnDetalle = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Recetas");
 
         tblRecetas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
